@@ -8,10 +8,10 @@ package entity;
  *
  * @author Admin
  */
-public class Account {
+public class Account extends BaseEntity{
     private String username;
     private String password;
-    private String name;
+    private String displayname;
 
     public String getUsername() {
         return username;
@@ -29,12 +29,12 @@ public class Account {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getDisplayname() {
+        return displayname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDisplayname(String displayname) {
+        this.displayname = displayname;
     }
-    
+  
 }
