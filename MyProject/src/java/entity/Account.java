@@ -8,11 +8,21 @@ package entity;
  *
  * @author Admin
  */
-public class Account extends BaseEntity{
+public class Account extends BaseEntity {
+
     private String username;
     private String password;
     private String displayname;
     private int typeAccount;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getUsername() {
         return username;
@@ -46,6 +56,4 @@ public class Account extends BaseEntity{
         this.typeAccount = typeAccount;
     }
 
-    
-      
 }
