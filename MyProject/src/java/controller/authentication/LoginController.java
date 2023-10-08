@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller.authentication;
 
 import dal.AccountDBContext;
@@ -18,13 +17,12 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Admin
  */
-
 public class LoginController extends HttpServlet {
-   
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -32,12 +30,13 @@ public class LoginController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         request.getRequestDispatcher("view/authentication/login.jsp").forward(request, response);
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -45,29 +44,32 @@ public class LoginController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         Account param = new Account();
         param.setUsername(username);
         param.setPassword(password);
-        
+
         AccountDBContext db = new AccountDBContext();
         Account loggedUser = db.get(param);
-        
-        if(loggedUser == null)
-        {
+
+        if (loggedUser == null) {
             response.getWriter().println("incorrect username or password");
+        } else {
+            if (loggedUser.getTypeAccount() == 0) {
+                request.getRequestDispatcher("view/student/studentHome.jsp").forward(request, response);
+            }
+            else {
+            response.getWriter().println("Welcome, but not a student.");
         }
-        else
-        {
-            response.getWriter().println("Hello " + loggedUser.getDisplayname());
         }
-        
+
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

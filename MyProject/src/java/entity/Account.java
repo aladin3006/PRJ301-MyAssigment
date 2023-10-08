@@ -12,6 +12,7 @@ public class Account extends BaseEntity{
     private String username;
     private String password;
     private String displayname;
+    private int typeAccount;
 
     public String getUsername() {
         return username;
@@ -36,5 +37,15 @@ public class Account extends BaseEntity{
     public void setDisplayname(String displayname) {
         this.displayname = displayname;
     }
-  
+
+    public int getTypeAccount() {
+        return typeAccount;
+    }
+
+    public void setTypeAccount(int typeAccount) {
+        this.typeAccount = typeAccount;
+    }
+
+    
+      
 }
