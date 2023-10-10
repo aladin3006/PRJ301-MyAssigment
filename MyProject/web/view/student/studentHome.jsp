@@ -21,6 +21,7 @@
             }
 
             .welcome {
+                display: flex;
                 color: white;
                 font-size: 26px;
                 background-color: orange;
@@ -51,8 +52,14 @@
     </head>
     <body>
         <div class="welcome">
-            Welcome <span id="name">[Name]</span> 
+            <c:if test="${sessionScope.account ne null}"> 
+                <span>Hello ${sessionScope.account.displayname} </span>
+            </c:if>
+            <form action="logout" method="post" style="display: inline-block;">
+                <input type="submit" value="Logout" />
+            </form>
         </div>
+            
         <div class="options">
             <a href="#" class="option-button">Weekly Timetable</a>
             <a href="#" class="option-button">Attendance Report</a>
