@@ -51,6 +51,7 @@
             <form action="login" method="POST">
                 Username: <input type="text" name="username" /> <br/>
                 Password: <input type="password" name="password" /> <br/>
+                <input type="checkbox" name="remember" value="remember" /> Remember me. <br/>
                 <input class="login-button" type="submit" value="Login" />
             </form>
         </div>

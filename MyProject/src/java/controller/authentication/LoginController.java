@@ -9,9 +9,11 @@ import entity.Account;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -56,13 +58,26 @@ public class LoginController extends HttpServlet {
 
         if (loggedUser == null) {
             response.getWriter().println("incorrect username or password");
+            //request.getRequestDispatcher("view/authentication/login.jsp").forward(request, response);
         } else {
+            String remember = request.getParameter("remember");
+
+            HttpSession session = request.getSession();
+            session.setAttribute("account", loggedUser);
+
+            if (remember != null) {
+                Cookie c_user = new Cookie("user", username);
+                Cookie c_pass = new Cookie("pass", password);
+                c_user.setMaxAge(3600 * 24);
+                c_pass.setMaxAge(3600 * 24);
+                response.addCookie(c_user);
+                response.addCookie(c_pass);
+            }
             if (loggedUser.getTypeAccount() == 0) {
                 request.getRequestDispatcher("view/student/studentHome.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("view/lecturer/lecturerHome.jsp").forward(request, response);
             }
-            else {
-            request.getRequestDispatcher("view/lecturer/lecturerHome.jsp").forward(request, response);
-        }
         }
 
     }
