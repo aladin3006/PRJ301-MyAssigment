@@ -10,9 +10,13 @@ import java.sql.Date;
  *
  * @author Admin
  */
-public class Schedule extends BaseEntity{
+public class Schedule extends BaseEntity {
+
     private int slot;
     private Date day;
+    private int year;
+    private int week_number;
+    private String week_description;
     private String weekdays;
     private String classID;
     private String roomID;
@@ -83,7 +87,29 @@ public class Schedule extends BaseEntity{
     public void setName(String name) {
         this.name = name;
     }
-    
-    
-                    
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getWeek_number() {
+        return week_number;
+    }
+
+    public void setWeek_number(int week_number) {
+        this.week_number = week_number;
+    }
+
+    public String getWeek_description() {
+        return week_description;
+    }
+
+    public void setWeek_description(String week_description) {
+        this.week_description = week_description;
+    }
+
 }

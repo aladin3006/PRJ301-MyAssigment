@@ -4,6 +4,7 @@
     Author     : Admin
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -55,32 +56,53 @@
             </form>
         </div>
 
-        <form action="ScheduleController" method="post">
-            <label for="yearSelect">Select Year:</label>
-            <select id="yearSelect">
-                <!-- Populate the years dynamically using Java code -->
-                <%
-                    int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
-                    int yearsToShow = 5; // Adjust this to show more or fewer years
-                    for (int i = -7; i < yearsToShow; i++) {
-                        int year = currentYear + i;
-                %>
-                <option value="<%= year %>"><%= year %></option>
-                <%
-                    }
-                %>
-            </select>
+        <form action="ScheduleController" method="GET" id="searchForm">
             <table>
-                <tr>
-                    <th>Time Slot</th>
-                    <th>Monday</th>
-                    <th>Tuesday</th>
-                    <th>Wednesday</th>
-                    <th>Thursday</th>
-                    <th>Friday</th>
-                    <th>Saturday</th>
-                    <th>Sunday</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th rowspan="2">
+                            <label for="yearSelect">YEAR</label>
+                            <span class="auto-style1"><strong>  </strong></span>
+                            <select name="year" onchange="document.getElementById('searchForm').submit();">
+                                <option>-2023-</option>
+                                <c:forEach items="${requestScope.schedules}" var="s">
+                                    <option value="${s.year}"
+                                            <c:if test="${s.year eq param.year}">
+                                                selected="selected"
+                                            </c:if>
+                                            >${s.year}</option>
+                                </c:forEach>
+                            <br/>
+                            </select>  
+                            <label for="weekSelect">WEEK</label>
+                            <select name="week_number" onchange="document.getElementById('searchForm').submit();">
+                                <c:forEach items="${requestScope.schedules}" var="s">
+                                    <option value="${s.week_number}"
+                                            <c:if test="${s.week_number eq param.week_number}">
+                                                selected="selected"
+                                            </c:if>
+                                            >${s.week_description}</option>
+                                </c:forEach>
+                            </select>
+                        </th>
+                        <th>MON</th>
+                        <th>TUE</th>
+                        <th>WED</th>
+                        <th>THU</th>
+                        <th>FRI</th>
+                        <th>SAT</th>
+                        <th>SUN</th>
+                    </tr>
+                    <tr>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                    </tr>
+                </thead>
                 <tr>
                     <td>Slot 1</td>
                     <td id="slot1Mon"></td>
