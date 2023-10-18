@@ -10,7 +10,7 @@ import java.sql.Date;
  *
  * @author Admin
  */
-public class Course extends BaseEntity{
+public class Subject extends BaseEntity{
     private int code;
     private String name;
     private String semester;

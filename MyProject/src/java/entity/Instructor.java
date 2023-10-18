@@ -4,14 +4,19 @@
  */
 package entity;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Admin
  */
-public class Student extends BaseEntity{
+public class Instructor extends BaseEntity {
+
+    private ArrayList<Schedule> schedule = new ArrayList<>();
+    private ArrayList<Group> groups = new ArrayList<>();
+    private int id;
     private int code;
     private String name;
-    private String fullName;
     private Subject subject;
     private Department dept;
 
@@ -31,15 +36,6 @@ public class Student extends BaseEntity{
         this.name = name;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    
     public Subject getSubject() {
         return subject;
     }
@@ -55,5 +51,29 @@ public class Student extends BaseEntity{
     public void setDept(Department dept) {
         this.dept = dept;
     }
-    
+
+    public ArrayList<Schedule> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(ArrayList<Schedule> schedule) {
+        this.schedule = schedule;
+    }
+
+    public ArrayList<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(ArrayList<Group> groups) {
+        this.groups = groups;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 }

@@ -14,7 +14,7 @@
     </servlet>
     <servlet>
         <servlet-name>Lecturers</servlet-name>
-        <servlet-class>controller.lecturer.ScheduleLecturerController</servlet-class>
+        <servlet-class>controller.instructor.ScheduleController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>login</servlet-name>
