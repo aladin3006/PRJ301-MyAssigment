@@ -12,104 +12,77 @@ import java.sql.Date;
  */
 public class Schedule extends BaseEntity {
 
-    private int slot;
-    private Date day;
-    private int year;
-    private int week_number;
-    private String week_description;
-    private String weekdays;
-    private String classID;
-    private String roomID;
-    private String course;
-    private String name;
-    private Account act;
+   private int id;
+    private Date date;
+    private TimeSlot time;
+    private Group group;
+    private int index;
+    private Room room;
+    private Instructor instructor;
+    private Subject subject;
 
-    public Account getAct() {
-        return act;
+    public int getId() {
+        return id;
     }
 
-    public void setAct(Account act) {
-        this.act = act;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getSlot() {
-        return slot;
+    public Date getDate() {
+        return date;
     }
 
-    public void setSlot(int slot) {
-        this.slot = slot;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public Date getDay() {
-        return day;
+    public TimeSlot getTime() {
+        return time;
     }
 
-    public void setDay(Date day) {
-        this.day = day;
+    public void setTime(TimeSlot time) {
+        this.time = time;
     }
 
-    public String getWeekdays() {
-        return weekdays;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setWeekdays(String weekdays) {
-        this.weekdays = weekdays;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
-    public String getClassID() {
-        return classID;
+    public int getIndex() {
+        return index;
     }
 
-    public void setClassID(String classID) {
-        this.classID = classID;
+    public void setIndex(int index) {
+        this.index = index;
     }
 
-    public String getRoomID() {
-        return roomID;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setRoomID(String roomID) {
-        this.roomID = roomID;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
-    public String getCourse() {
-        return course;
+    public Instructor getInstructor() {
+        return instructor;
     }
 
-    public void setCourse(String course) {
-        this.course = course;
+    public void setInstructor(Instructor instructor) {
+        this.instructor = instructor;
     }
 
-    public String getName() {
-        return name;
+    public Subject getSubject() {
+        return subject;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getWeek_number() {
-        return week_number;
-    }
-
-    public void setWeek_number(int week_number) {
-        this.week_number = week_number;
-    }
-
-    public String getWeek_description() {
-        return week_description;
-    }
-
-    public void setWeek_description(String week_description) {
-        this.week_description = week_description;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 
 }

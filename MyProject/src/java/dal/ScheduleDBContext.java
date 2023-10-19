@@ -4,8 +4,13 @@
  */
 package dal;
 
+import entity.Group;
+import entity.Room;
+import entity.Subject;
+import entity.TimeSlot;
 import entity.Schedule;
 import entity.Account;
+import java.sql.Date;
 //import entity.Department;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,135 +25,61 @@ import java.util.logging.Logger;
  */
 public class ScheduleDBContext extends DBContext<Schedule> {
 
-    @Override
-    public Schedule get(Schedule s) {
-
+    public ArrayList<Schedule> getSchedules (int iid, Date from, Date to) {
+        ArrayList<Schedule> schedules = new ArrayList<>();
         try {
-            String sql = "SELECT s.[slot]\n"
-                    + "      ,s.[day]\n"
-                    + "      ,s.[year]\n"
-                    + "      ,s.[week_number]\n"
-                    + "      ,s.[week_description]\n"
-                    + "      ,s.[weekdays]\n"
-                    + "      ,s.[classID]\n"
-                    + "      ,s.[roomID]\n"
-                    + "      ,s.[course]\n"
-                    + "      ,a.[name]\n"
-                    + "  FROM [Schedule] s INNER JOIN Account a \n"
-                    + "  ON s.name = a.name WHERE [aname] = ?";
+            String sql = "SELECT s.scheid,s.date,r.roomid,t.tid,t.tname,g.gid,g.gname,su.subid,subname,i.iid,i.iname\n"
+                    + "FROM [Schedule] s INNER JOIN [Instructor] i ON i.iid = s.iid\n"
+                    + "				INNER JOIN [Group] g ON g.gid = s.gid\n"
+                    + "				INNER JOIN [TimeSlot] t ON s.tid = t.tid\n"
+                    + "				INNER JOIN [Room] r ON r.roomid = s.rid\n"
+                    + "				INNER JOIN [Subject] su ON g.subid = su.subid\n"
+                    + "		WHERE i.iid = ? AND s.[date] >= ? AND s.[date] <= ?";
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, s.getName());
+            stm.setInt(1, iid);
+            stm.setDate(2, from);
+            stm.setDate(3, to);
             ResultSet rs = stm.executeQuery();
-            if (rs.next()) {
-
-                s.setSlot(rs.getInt("slot"));
-                s.setDay(rs.getDate("day"));
-                s.setYear(rs.getInt("year"));
-                s.setWeek_number(rs.getInt("week_number"));
-                s.setWeek_description(rs.getString("week_description"));
-                s.setWeekdays(rs.getString("weekdays"));
-                s.setClassID(rs.getString("classID"));
-                s.setRoomID(rs.getString("roomID"));
-                s.setCourse(rs.getString("course"));
-
-                Account a = new Account();
-                a.setName(rs.getString("dname"));
-                s.setAct(a);
-                return s;
+            while (rs.next()) {
+                Schedule schedule = new Schedule();
+                schedule.setId(rs.getInt("scheid"));
+                schedule.setDate(rs.getDate("date"));
+                Room room = new Room();
+                room.setRid(rs.getString("roomid"));
+                schedule.setRoom(room);
+                TimeSlot t = new TimeSlot();
+                t.setId(rs.getInt("tid"));
+                t.setName(rs.getString("tname"));
+                schedule.setTime(t);
+                Group g = new Group();
+                g.setId(rs.getInt("gid"));
+                g.setName(rs.getString("gname"));
+                schedule.setGroup(g);
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("subid"));
+                subject.setName(rs.getString("subname"));
+                schedule.setSubject(subject);
+                schedules.add(schedule);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ScheduleDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return schedules;
     }
+    
+//    public ArrayList<Schedule> getInstructorid (String aname, String icode ) {
+//        ArrayList<Schedule> iid = new ArrayList<>();
+//        try {
+//            
+//        } catch (SQLException ex) {
+//             Logger.getLogger(ScheduleDBContext.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//       return iid;
+//    }
 
     @Override
     public ArrayList<Schedule> list() {
-        ArrayList<Schedule> list = new ArrayList<>();
-        try {
-            String sql = "SELECT s.[slot]\n"
-                    + "      ,s.[day]\n"
-                    + "      ,s.[year]\n"
-                    + "      ,s.[week_number]\n"
-                    + "      ,s.[week_description]\n"
-                    + "      ,s.[weekdays]\n"
-                    + "      ,s.[classID]\n"
-                    + "      ,s.[roomID]\n"
-                    + "      ,s.[course]\n"
-                    + "      ,a.[name]\n"
-                    + "  FROM [Schedule] s INNER JOIN Account a \n"
-                    + "  ON s.name = a.name WHERE [aname] = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                Schedule s = new Schedule();
-                s.setSlot(rs.getInt("slot"));
-                s.setDay(rs.getDate("day"));
-                s.setYear(rs.getInt("year"));
-                s.setWeek_number(rs.getInt("week_number"));
-                s.setWeek_description(rs.getString("week_description"));
-                s.setWeekdays(rs.getString("weekdays"));
-                s.setClassID(rs.getString("classID"));
-                s.setRoomID(rs.getString("roomID"));
-                s.setCourse(rs.getString("course"));
-
-                Account a = new Account();
-                a.setName(rs.getString("dname"));
-                s.setAct(a);
-                list.add(s);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ScheduleDBContext.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return list;
-    }
-
-    public ArrayList<Schedule> search(int year, int week_number, String week_description){
- 
-        ArrayList<Schedule> list = new ArrayList<>();
-        String sql = "SELECT [slot]\n"
-                    + "      ,[day]\n"
-                    + "      ,[year]\n"
-                    + "      ,[week_number]\n"
-                    + "      ,[week_description]\n"
-                    + "      ,[weekdays]\n"
-                    + "      ,[classID]\n"
-                    + "      ,[roomID]\n"
-                    + "      ,[course]\n"
-                    + "  FROM [Schedule] where 1=1 ";
-        if(year!=0){
-            sql+=" and year="+year;
-        }
-        if(week_number!=0){
-            sql+=" and week_number="+week_number;
-        }
-        if( week_description!= null && !week_description.equals("")){
-            sql+=" and week_description like '%"+week_description+"%'";
-        }
-        try {
-            PreparedStatement stm = connection.prepareStatement(sql);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                Schedule s = new Schedule();
-                s.setSlot(rs.getInt("slot"));
-                s.setDay(rs.getDate("day"));
-                s.setYear(rs.getInt("year"));
-                s.setWeek_number(rs.getInt("week_number"));
-                s.setWeek_description(rs.getString("week_description"));
-                s.setWeekdays(rs.getString("weekdays"));
-                s.setClassID(rs.getString("classID"));
-                s.setRoomID(rs.getString("roomID"));
-                s.setCourse(rs.getString("course"));
-
-                Account a = new Account();
-                a.setName(rs.getString("dname"));
-                s.setAct(a);
-                list.add(s);
-            }
-        } catch (SQLException ex) {
-            
-        }
-        return list;
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
@@ -163,6 +94,11 @@ public class ScheduleDBContext extends DBContext<Schedule> {
 
     @Override
     public void delete(Schedule entity) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Schedule get(Schedule entity) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

@@ -4,21 +4,30 @@
  */
 package controller.instructor;
 
+import controller.authentication.BasedRequiredAuthenticationController;
 import dal.ScheduleDBContext;
 import entity.Schedule;
+import dal.TimeSlotDBContext;
+import entity.Account;
+import entity.TimeSlot;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Date;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import util.DateTimeHelper;
 
 /**
  *
  * @author Admin
  */
-public class ScheduleController extends HttpServlet {
+public class ScheduleController extends BasedRequiredAuthenticationController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,27 +38,40 @@ public class ScheduleController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        ScheduleDBContext db = new ScheduleDBContext();
-        ArrayList<Schedule> list = db.list();
-        request.setAttribute("schedules", list);
-        String year_raw = request.getParameter("year");
-        String week_number_raw = request.getParameter("week_number");
-        String week_description_raw = request.getParameter("week_description");
-        int year, week_number;
-        String week_description;
-        try {
-            year = (year_raw == null) ? 0 : Integer.parseInt(year_raw);
-            week_number = (week_number_raw == null) ? 0 : Integer.parseInt(week_number_raw);
-            week_description = (week_description_raw == null) ? "" :week_description_raw;
-            ArrayList<Schedule> schedules = db.search(year, week_number, week_description);
-            request.setAttribute("schedules", schedules);
-            request.getRequestDispatcher("view/lecturer/lecturerHome.jsp").forward(request, response);
-        } catch (NumberFormatException e) {
-            
+        int instructorid = Integer.parseInt(request.getParameter("id"));
+        String r_from = request.getParameter("from");
+        String r_to = request.getParameter("to");
+        ArrayList<Date> dates = new ArrayList<>();
+        
+        if(r_from == null)//this week
+        {
+            dates = DateTimeHelper.getCurrentWeekDates();
         }
+        else
+        {
+            try {
+                dates = DateTimeHelper.getSqlDatesInRange(r_from, r_to);
+            } catch (ParseException ex) {
+                Logger.getLogger(ScheduleController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+         TimeSlotDBContext timeDB = new TimeSlotDBContext();
+         ArrayList<TimeSlot> slots = timeDB.list();
+         
+         ScheduleDBContext scheDB = new ScheduleDBContext();
+        ArrayList<Schedule> schedules = scheDB.getSchedules(instructorid, dates.get(0), dates.get(dates.size()-1));
+         
+         request.setAttribute("slots", slots);
+         request.setAttribute("dates", dates);
+         request.setAttribute("from", dates.get(0));
+         request.setAttribute("to", dates.get(dates.size()-1));
+         request.setAttribute("schedules", schedules);
+         
+         
+         request.getRequestDispatcher("../view/instructor/lecturerHome.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -62,9 +84,9 @@ public class ScheduleController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /**
@@ -76,9 +98,9 @@ public class ScheduleController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /**

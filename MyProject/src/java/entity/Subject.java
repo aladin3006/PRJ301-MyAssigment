@@ -11,18 +11,18 @@ import java.sql.Date;
  * @author Admin
  */
 public class Subject extends BaseEntity{
-    private int code;
+    private int id;
     private String name;
     private String semester;
     private Date startdate;
     private Department dept;
 
-    public int getCode() {
-        return code;
+    public int getId() {
+        return id;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
