@@ -10,9 +10,9 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class Room {
+public class Room extends BaseEntity{
     private String rid;
-    private ArrayList<Schedule> schedule = new ArrayList<>();
+    private ArrayList<Schedule> schedules = new ArrayList<>();
 
     public String getRid() {
         return rid;
@@ -22,12 +22,12 @@ public class Room {
         this.rid = rid;
     }
 
-    public ArrayList<Schedule> getSchedule() {
-        return schedule;
+    public ArrayList<Schedule> getSchedules() {
+        return schedules;
     }
 
-    public void setSchedule(ArrayList<Schedule> schedule) {
-        this.schedule = schedule;
+    public void setSchedules(ArrayList<Schedule> schedules) {
+        this.schedules = schedules;
     }
     
 }

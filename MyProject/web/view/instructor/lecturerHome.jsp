@@ -4,6 +4,7 @@
     Author     : Admin
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -75,7 +76,8 @@
     </tr>
     <c:forEach items="${requestScope.slots}" var="s">
         <tr>
-            <td>${s.tname}</td>
+            <td>${s.name}</td>
+
             <c:forEach items="${requestScope.dates}" var="d">
                 <td>
                     <c:forEach items="${requestScope.schedules}" var="sche">

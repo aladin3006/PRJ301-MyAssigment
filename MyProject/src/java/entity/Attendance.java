@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author Admin
  */
-public class Attendance {
+public class Attendance extends BaseEntity{
     private Schedule schedule;
     private Student student;
     private boolean status;

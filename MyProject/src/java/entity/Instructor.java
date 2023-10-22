@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class Instructor extends BaseEntity {
 
-    private ArrayList<Schedule> schedule = new ArrayList<>();
+    private ArrayList<Schedule> schedules = new ArrayList<>();
     private ArrayList<Group> groups = new ArrayList<>();
     private int id;
     private int code;
@@ -52,12 +52,12 @@ public class Instructor extends BaseEntity {
         this.dept = dept;
     }
 
-    public ArrayList<Schedule> getSchedule() {
-        return schedule;
+    public ArrayList<Schedule> getSchedules() {
+        return schedules;
     }
 
-    public void setSchedule(ArrayList<Schedule> schedule) {
-        this.schedule = schedule;
+    public void setSchedules(ArrayList<Schedule> schedules) {
+        this.schedules = schedules;
     }
 
     public ArrayList<Group> getGroups() {

@@ -4,7 +4,7 @@
  */
 package controller.instructor;
 
-import controller.authentication.BasedRequiredAuthenticationController;
+//import controller.authentication.BasedRequiredAuthenticationController;
 import dal.ScheduleDBContext;
 import entity.Schedule;
 import dal.TimeSlotDBContext;
@@ -27,7 +27,7 @@ import util.DateTimeHelper;
  *
  * @author Admin
  */
-public class ScheduleController extends BasedRequiredAuthenticationController {
+public class ScheduleController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,7 +38,7 @@ public class ScheduleController extends BasedRequiredAuthenticationController {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response, Account account)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)//, Account account)
             throws ServletException, IOException {
         int instructorid = Integer.parseInt(request.getParameter("id"));
         String r_from = request.getParameter("from");
@@ -84,9 +84,9 @@ public class ScheduleController extends BasedRequiredAuthenticationController {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)//, Account account)
             throws ServletException, IOException {
-        processRequest(request, response, account);
+        processRequest(request, response);
     }
 
     /**
@@ -98,9 +98,9 @@ public class ScheduleController extends BasedRequiredAuthenticationController {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response, Account account)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)//, Account account)
             throws ServletException, IOException {
-        processRequest(request, response, account);
+        processRequest(request, response);
     }
 
     /**
