@@ -6,6 +6,7 @@ package dal;
 
 import entity.Account;
 import entity.Feature;
+import entity.Instructor;
 import entity.Role;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -69,6 +70,31 @@ public class AccountDBContext extends DBContext<Account> {
             }
         }
         return null;
+    }
+
+    public ArrayList<Account> getIid() {
+        ArrayList<Account> getId = new ArrayList<>();
+        try {
+            String sql = "SELECT a.username,a.displayname,a.typeAccount, a.aname, i.iid\n"
+                    + "  FROM [Account] a INNER JOIN [Instructor] i ON i.icode = a.aname";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Account a = new Account();
+                a.setUsername(rs.getString("username"));
+                a.setDisplayname(rs.getString("displayname"));
+                a.setTypeAccount(rs.getInt("typeAccount"));
+
+                Instructor i = new Instructor();
+                i.setId(rs.getInt("iid"));
+                a.setInstructor(i);
+                getId.add(a);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return getId;
     }
 
     public ArrayList<Role> getRolesAndFeatures(String username, String url) {

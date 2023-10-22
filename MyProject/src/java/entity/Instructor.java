@@ -14,6 +14,7 @@ public class Instructor extends BaseEntity {
 
     private ArrayList<Schedule> schedules = new ArrayList<>();
     private ArrayList<Group> groups = new ArrayList<>();
+    private ArrayList<Account> getId = new ArrayList<>();
     private int id;
     private int code;
     private String name;
@@ -66,6 +67,14 @@ public class Instructor extends BaseEntity {
 
     public void setGroups(ArrayList<Group> groups) {
         this.groups = groups;
+    }
+
+    public ArrayList<Account> getGetId() {
+        return getId;
+    }
+
+    public void setGetId(ArrayList<Account> getId) {
+        this.getId = getId;
     }
 
     public int getId() {
