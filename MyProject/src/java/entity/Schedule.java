@@ -5,6 +5,7 @@
 package entity;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  *
@@ -12,7 +13,7 @@ import java.sql.Date;
  */
 public class Schedule extends BaseEntity {
 
-   private int id;
+    private int id;
     private Date date;
     private TimeSlot time;
     private Group group;
@@ -20,6 +21,8 @@ public class Schedule extends BaseEntity {
     private Room room;
     private Instructor instructor;
     private Subject subject;
+    private boolean isAtt;
+    private ArrayList<Attendance> atts = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -83,6 +86,22 @@ public class Schedule extends BaseEntity {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+    public boolean isIsAtt() {
+        return isAtt;
+    }
+
+    public void setIsAtt(boolean isAtt) {
+        this.isAtt = isAtt;
+    }
+
+    public ArrayList<Attendance> getAtts() {
+        return atts;
+    }
+
+    public void setAtts(ArrayList<Attendance> atts) {
+        this.atts = atts;
     }
 
 }

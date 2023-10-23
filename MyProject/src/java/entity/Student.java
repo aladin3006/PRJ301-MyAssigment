@@ -4,16 +4,20 @@
  */
 package entity;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Admin
  */
 public class Student extends BaseEntity{
+    private int id;
     private int code;
     private String name;
     private String fullName;
     private Subject subject;
     private Department dept;
+    private ArrayList<Group> groups = new ArrayList<>();
 
     public int getCode() {
         return code;
@@ -55,5 +59,22 @@ public class Student extends BaseEntity{
     public void setDept(Department dept) {
         this.dept = dept;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public ArrayList<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(ArrayList<Group> groups) {
+        this.groups = groups;
+    }
+    
     
 }

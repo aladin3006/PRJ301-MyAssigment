@@ -95,8 +95,12 @@
                         <td>
                             <c:forEach items="${requestScope.schedules}" var="sche">
                                 <c:if test="${sche.time.id eq s.id and sche.date eq d}">
+                                     <a href="att?id=${ses.id}">
                                     ${sche.subject.name}-${sche.group.name}
                                     <br>at ${sche.room.rid}<br>                                   
+                                    </a>
+                                    <c:if test="${sche.isAtt}">(attended)</c:if>
+                                    <c:if test="${!sche.isAtt}">(Not yet)</c:if>
                                     <br>-<div class="label">${s.description}</div><br>
                                 </c:if>
                             </c:forEach>

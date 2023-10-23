@@ -10,6 +10,7 @@ import entity.Subject;
 import entity.TimeSlot;
 import entity.Schedule;
 import entity.Account;
+import entity.Attendance;
 import java.sql.Date;
 //import entity.Department;
 import java.sql.PreparedStatement;
@@ -25,7 +26,7 @@ import java.util.logging.Logger;
  */
 public class ScheduleDBContext extends DBContext<Schedule> {
 
-    public ArrayList<Schedule> getSchedules (int iid, Date from, Date to) {
+    public ArrayList<Schedule> getSchedules(int iid, Date from, Date to) {
         ArrayList<Schedule> schedules = new ArrayList<>();
         try {
             String sql = "SELECT s.scheid,s.date,r.roomid,t.tid,t.tname,g.gid,g.gname,su.subid,subname,i.iid,i.iname\n"
@@ -66,39 +67,93 @@ public class ScheduleDBContext extends DBContext<Schedule> {
         }
         return schedules;
     }
-    
-//    public ArrayList<Schedule> getInstructorid (String aname, String icode ) {
-//        ArrayList<Schedule> iid = new ArrayList<>();
-//        try {
-//            
-//        } catch (SQLException ex) {
-//             Logger.getLogger(ScheduleDBContext.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//       return iid;
-//    }
 
-    @Override
-    public ArrayList<Schedule> list() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void addAttendances(Schedule sche) {
+        try {
+            connection.setAutoCommit(false);
+            String sql_update_isAtt = "UPDATE [Session] SET isAtt = 1 WHERE scheid =?";
+            PreparedStatement stm_update_isAtt = connection.prepareStatement(sql_update_isAtt);
+            stm_update_isAtt.setInt(1, sche.getId());
+            stm_update_isAtt.executeUpdate();
+
+            String sql_remove_atts = "DELETE Attendance WHERE sesid =?";
+            PreparedStatement stm_remove_atts = connection.prepareStatement(sql_remove_atts);
+            stm_remove_atts.setInt(1, sche.getId());
+            stm_remove_atts.executeUpdate();
+
+            for (Attendance att : sche.getAtts()) {
+                String sql_insert_att = "INSERT INTO [Attendance]\n"
+                        + "           ([scheid]\n"
+                        + "           ,[stuid]\n"
+                        + "           ,[status]\n"
+                        + "           ,[description]\n"
+                        + "           ,[att_datetime])\n"
+                        + "     VALUES\n"
+                        + "           (?\n"
+                        + "           ,?\n"
+                        + "           ,?\n"
+                        + "           ,?\n"
+                        + "           ,GETDATE())";
+                PreparedStatement stm_insert_att = connection.prepareStatement(sql_insert_att);
+                stm_insert_att.setInt(1, sche.getId());
+                stm_insert_att.setInt(2, att.getStudent().getId());
+                stm_insert_att.setBoolean(3, att.isStatus());
+                stm_insert_att.setString(4, att.getDescription());
+                stm_insert_att.executeUpdate();
+            }
+            connection.commit();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+                Logger.getLogger(ScheduleDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(ScheduleDBContext.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(ScheduleDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
-    @Override
-    public void insert(Schedule entity) {
+        @Override
+        public ArrayList<Schedule> list
+        
+            () {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        }
 
-    @Override
-    public void update(Schedule entity) {
+        @Override
+        public void insert
+        (Schedule entity
+        
+            ) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        }
 
-    @Override
-    public void delete(Schedule entity) {
+        @Override
+        public void update
+        (Schedule entity
+        
+            ) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        }
 
-    @Override
-    public Schedule get(Schedule entity) {
+        @Override
+        public void delete
+        (Schedule entity
+        
+            ) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        @Override
+        public Schedule get
+        (Schedule entity
+        
+            ) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
     }
-}
