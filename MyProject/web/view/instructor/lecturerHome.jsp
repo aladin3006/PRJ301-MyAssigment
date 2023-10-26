@@ -66,9 +66,13 @@
                 <span>Hello ${sessionScope.account.displayname} </span>
             </c:if>
             <form action="logout" method="post" style="display: inline-block;">
-                <input type="submit" value="Logout" />
+                <input type="submit" value="logout" />
             </form>
-        </div>
+        </div> 
+
+        <span>
+            ${sessionScope.getId.ins.id}
+        </span>
 
         <table border="">
             <tr>
@@ -95,12 +99,12 @@
                         <td>
                             <c:forEach items="${requestScope.schedules}" var="sche">
                                 <c:if test="${sche.time.id eq s.id and sche.date eq d}">
-                                     <a href="att?id=${ses.id}">
-                                    ${sche.subject.name}-${sche.group.name}
-                                    <br>at ${sche.room.rid}<br>                                   
+                                    <a href="att?id=${sche.id}">
+                                        ${sche.subject.name}-${sche.group.name}
+                                        <br>at ${sche.room.rid}<br>                                   
                                     </a>
-                                    <c:if test="${sche.isAtt}">(attended)</c:if>
-                                    <c:if test="${!sche.isAtt}">(Not yet)</c:if>
+                                    <c:if test="${sche.isAtt}"><span style="color: green;">(Attended)</span></c:if>
+                                    <c:if test="${!sche.isAtt}"><span style="color: red;">(Not yet)</span></c:if>
                                     <br>-<div class="label">${s.description}</div><br>
                                 </c:if>
                             </c:forEach>

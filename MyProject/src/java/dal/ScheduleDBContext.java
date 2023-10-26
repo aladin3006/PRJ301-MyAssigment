@@ -10,6 +10,7 @@ import entity.Subject;
 import entity.TimeSlot;
 import entity.Schedule;
 import entity.Account;
+import entity.Instructor;
 import entity.Attendance;
 import java.sql.Date;
 //import entity.Department;
@@ -29,7 +30,7 @@ public class ScheduleDBContext extends DBContext<Schedule> {
     public ArrayList<Schedule> getSchedules(int iid, Date from, Date to) {
         ArrayList<Schedule> schedules = new ArrayList<>();
         try {
-            String sql = "SELECT s.scheid,s.date,r.roomid,t.tid,t.tname,g.gid,g.gname,su.subid,subname,i.iid,i.iname\n"
+            String sql = "SELECT s.scheid,s.date,r.roomid,t.tid,t.tname,g.gid,g.gname,su.subid,subname,i.iid,i.iname,s.isAtt\n"
                     + "FROM [Schedule] s INNER JOIN [Instructor] i ON i.iid = s.iid\n"
                     + "				INNER JOIN [Group] g ON g.gid = s.gid\n"
                     + "				INNER JOIN [TimeSlot] t ON s.tid = t.tid\n"
@@ -45,6 +46,10 @@ public class ScheduleDBContext extends DBContext<Schedule> {
                 Schedule schedule = new Schedule();
                 schedule.setId(rs.getInt("scheid"));
                 schedule.setDate(rs.getDate("date"));
+                schedule.setIsAtt(rs.getBoolean("isAtt"));
+                Instructor instructor = new Instructor();
+                instructor.setId(rs.getInt("iid"));
+                schedule.setInstructor(instructor);
                 Room room = new Room();
                 room.setRid(rs.getString("roomid"));
                 schedule.setRoom(room);
@@ -71,12 +76,12 @@ public class ScheduleDBContext extends DBContext<Schedule> {
     public void addAttendances(Schedule sche) {
         try {
             connection.setAutoCommit(false);
-            String sql_update_isAtt = "UPDATE [Session] SET isAtt = 1 WHERE scheid =?";
+            String sql_update_isAtt = "UPDATE [Schedule] SET isAtt = 1 WHERE scheid =?";
             PreparedStatement stm_update_isAtt = connection.prepareStatement(sql_update_isAtt);
             stm_update_isAtt.setInt(1, sche.getId());
             stm_update_isAtt.executeUpdate();
 
-            String sql_remove_atts = "DELETE Attendance WHERE sesid =?";
+            String sql_remove_atts = "DELETE Attendance WHERE scheid =?";
             PreparedStatement stm_remove_atts = connection.prepareStatement(sql_remove_atts);
             stm_remove_atts.setInt(1, sche.getId());
             stm_remove_atts.executeUpdate();
@@ -118,42 +123,67 @@ public class ScheduleDBContext extends DBContext<Schedule> {
         }
     }
 
-        @Override
-        public ArrayList<Schedule> list
-        
-            () {
+    @Override
+    public ArrayList<Schedule> list() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        }
-
-        @Override
-        public void insert
-        (Schedule entity
-        
-            ) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        }
-
-        @Override
-        public void update
-        (Schedule entity
-        
-            ) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        }
-
-        @Override
-        public void delete
-        (Schedule entity
-        
-            ) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        }
-
-        @Override
-        public Schedule get
-        (Schedule entity
-        
-            ) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        }
     }
+
+    @Override
+    public void insert(Schedule entity
+    ) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void update(Schedule entity
+    ) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void delete(Schedule entity
+    ) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Schedule get(Schedule entity) {
+        try {
+            String sql = "SELECT s.scheid,s.date,r.roomid,t.tid,t.description,g.gid,g.gname,su.subid,subname,i.iid,i.iname,s.isAtt\n"
+                    + "FROM [Schedule] s INNER JOIN [Instructor] i ON i.iid = s.iid\n"
+                    + "				INNER JOIN [Group] g ON g.gid = s.gid\n"
+                    + "				INNER JOIN [TimeSlot] t ON s.tid = t.tid\n"
+                    + "				INNER JOIN [Room] r ON r.roomid = s.rid\n"
+                    + "				INNER JOIN [Subject] su ON g.subid = su.subid\n"
+                    + "		WHERE s.scheid = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, entity.getId());
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Schedule schedule = new Schedule();
+                schedule.setId(rs.getInt("scheid"));
+                schedule.setDate(rs.getDate("date"));
+                schedule.setIsAtt(rs.getBoolean("isAtt"));
+                Room room = new Room();
+                room.setRid(rs.getString("roomid"));
+                schedule.setRoom(room);
+                TimeSlot t = new TimeSlot();
+                t.setId(rs.getInt("tid"));
+                t.setDescription(rs.getString("description"));
+                schedule.setTime(t);
+                Group g = new Group();
+                g.setId(rs.getInt("gid"));
+                g.setName(rs.getString("gname"));
+                schedule.setGroup(g);
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("subid"));
+                subject.setName(rs.getString("subname"));
+                schedule.setSubject(subject);
+                return schedule;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ScheduleDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+}

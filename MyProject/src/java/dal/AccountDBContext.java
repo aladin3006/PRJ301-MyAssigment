@@ -45,7 +45,7 @@ public class AccountDBContext extends DBContext<Account> {
     public Account get(Account entity) {
 
         try {
-            String sql = "SELECT username,displayname,typeAccount FROM Account\n"
+            String sql = "SELECT username,displayname,typeAccount,aname FROM Account\n"
                     + "WHERE username = ? AND [password] = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, entity.getUsername());
@@ -56,6 +56,7 @@ public class AccountDBContext extends DBContext<Account> {
                 account.setUsername(rs.getString("username"));
                 account.setDisplayname(rs.getString("displayname"));
                 account.setTypeAccount(rs.getInt("typeAccount"));
+                account.setName(rs.getString("aname"));
 
                 return account;
             }
@@ -72,12 +73,19 @@ public class AccountDBContext extends DBContext<Account> {
         return null;
     }
 
-    public ArrayList<Account> getIid() {
+    public ArrayList<Account> getIid(String aname) {
         ArrayList<Account> getId = new ArrayList<>();
         try {
             String sql = "SELECT a.username,a.displayname,a.typeAccount, a.aname, i.iid\n"
                     + "  FROM [Account] a INNER JOIN [Instructor] i ON i.icode = a.aname";
+            if (aname != null) {
+                sql += " WHERE a.aname = ?";
+            }
             PreparedStatement stm = connection.prepareStatement(sql);
+
+            if (aname != null) {
+                stm.setString(1, aname);
+            }
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Account a = new Account();
@@ -85,9 +93,9 @@ public class AccountDBContext extends DBContext<Account> {
                 a.setDisplayname(rs.getString("displayname"));
                 a.setTypeAccount(rs.getInt("typeAccount"));
 
-                Instructor i = new Instructor();
-                i.setId(rs.getInt("iid"));
-                a.setInstructor(i);
+                Instructor ins = new Instructor();
+                ins.setId(rs.getInt("iid"));
+                a.setInstructor(ins);
                 getId.add(a);
             }
 

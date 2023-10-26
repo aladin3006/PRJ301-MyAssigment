@@ -79,8 +79,8 @@ public class AttendanceController extends HttpServlet {
             atts.add(a);
         }
         sche.setAtts(atts);
-        ScheduleDBContext sesDB = new ScheduleDBContext();
-        sesDB.addAttendances(sche);
+        ScheduleDBContext scheDB = new ScheduleDBContext();
+        scheDB.addAttendances(sche);
         response.getWriter().println("done");
     }
 

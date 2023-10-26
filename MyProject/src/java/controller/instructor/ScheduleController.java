@@ -1,4 +1,4 @@
- /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
@@ -17,6 +17,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -39,40 +40,50 @@ public class ScheduleController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)//, Account account)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //int instructorid = Integer.parseInt(request.getParameter("id"));
-        AccountDBContext aID = new AccountDBContext();
-        ArrayList<Account> getId = aID.getIid();
-        int instructorid = (getId.isEmpty()) ? 0 : getId.get(0).getInstructor().getId();
+        HttpSession session = request.getSession();
+        Account loggedUser = (Account) session.getAttribute("account");
 
-        String r_from = request.getParameter("from");
-        String r_to = request.getParameter("to");
-        ArrayList<Date> dates = new ArrayList<>();
+        if (loggedUser != null) {
+            String aname = loggedUser.getName();
+            AccountDBContext dbContext = new AccountDBContext();
+            ArrayList<Account> accountList = dbContext.getIid(aname);
 
-        if (r_from == null)//this week
-        {
-            dates = DateTimeHelper.getCurrentWeekDates();
-        } else {
-            try {
-                dates = DateTimeHelper.getSqlDatesInRange(r_from, r_to);
-            } catch (ParseException ex) {
-                Logger.getLogger(ScheduleController.class.getName()).log(Level.SEVERE, null, ex);
+            int instructorid = -1; // Default value if not found
+            for (Account account : accountList) {
+                if (account.getInstructor() != null) {
+                    instructorid = account.getInstructor().getId();
+                    break;
+                }
             }
+
+            String r_from = request.getParameter("from");
+            String r_to = request.getParameter("to");
+            ArrayList<Date> dates = new ArrayList<>();
+
+            if (r_from == null) {
+                dates = DateTimeHelper.getCurrentWeekDates();
+            } else {
+                try {
+                    dates = DateTimeHelper.getSqlDatesInRange(r_from, r_to);
+                } catch (ParseException ex) {
+                    Logger.getLogger(ScheduleController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            TimeSlotDBContext timeDB = new TimeSlotDBContext();
+            ArrayList<TimeSlot> slots = timeDB.list();
+
+            ScheduleDBContext scheDB = new ScheduleDBContext();
+            ArrayList<Schedule> schedules = scheDB.getSchedules(instructorid, dates.get(0), dates.get(dates.size() - 1));
+
+            request.setAttribute("slots", slots);
+            request.setAttribute("dates", dates);
+            request.setAttribute("from", dates.get(0));
+            request.setAttribute("to", dates.get(dates.size() - 1));
+            request.setAttribute("schedules", schedules);
         }
-
-        TimeSlotDBContext timeDB = new TimeSlotDBContext();
-        ArrayList<TimeSlot> slots = timeDB.list();
-
-        ScheduleDBContext scheDB = new ScheduleDBContext();
-        ArrayList<Schedule> schedules = scheDB.getSchedules(instructorid, dates.get(0), dates.get(dates.size() - 1));
-
-        request.setAttribute("slots", slots);
-        request.setAttribute("dates", dates);
-        request.setAttribute("from", dates.get(0));
-        request.setAttribute("to", dates.get(dates.size() - 1));
-        request.setAttribute("schedules", schedules);
-        request.setAttribute("getId", getId);
 
         request.getRequestDispatcher("../view/instructor/lecturerHome.jsp").forward(request, response);
     }
