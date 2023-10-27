@@ -8,6 +8,7 @@ import entity.Account;
 import entity.Feature;
 import entity.Instructor;
 import entity.Role;
+import entity.Student;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -104,6 +105,40 @@ public class AccountDBContext extends DBContext<Account> {
         }
         return getId;
     }
+    
+    public ArrayList<Account> getStuid(String aname) {
+        ArrayList<Account> getId = new ArrayList<>();
+        try {
+            String sql = "SELECT a.username,a.displayname,a.typeAccount, a.aname, s.stuid\n"
+                    + "  FROM [Account] a INNER JOIN [Studnet] s ON s.stuname = a.aname";
+            if (aname != null) {
+                sql += " WHERE a.aname = ?";
+            }
+            PreparedStatement stm = connection.prepareStatement(sql);
+
+            if (aname != null) {
+                stm.setString(1, aname);
+            }
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Account a = new Account();
+                a.setUsername(rs.getString("username"));
+                a.setDisplayname(rs.getString("displayname"));
+                a.setTypeAccount(rs.getInt("typeAccount"));
+
+                Student students = new Student();
+                students.setId(rs.getInt("stuid"));
+                a.setStudent(students);
+                getId.add(a);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return getId;
+    }
+    
+    
 
     public ArrayList<Role> getRolesAndFeatures(String username, String url) {
         ArrayList<Role> roles = new ArrayList<>();

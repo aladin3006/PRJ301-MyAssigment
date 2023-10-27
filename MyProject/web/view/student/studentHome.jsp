@@ -4,6 +4,8 @@
     Author     : Admin
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,9 +61,11 @@
                 <input type="submit" value="Logout" />
             </form>
         </div>
-            
+
         <div class="options">
-            <a href="#" class="option-button">Weekly Timetable</a>
+            <c:forEach items="${requestScope.timetables}" var="sche">
+                <a href="timetable?id=${sche.id}" class="option-button">Weekly Timetable</a>
+            </c:forEach>
             <a href="#" class="option-button">Attendance Report</a>
             <a href="#" class="option-button">Mark Report</a>
         </div>

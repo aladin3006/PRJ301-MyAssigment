@@ -20,6 +20,7 @@ public class Schedule extends BaseEntity {
     private int index;
     private Room room;
     private Instructor instructor;
+    private Student student;
     private Subject subject;
     private boolean isAtt;
     private ArrayList<Attendance> atts = new ArrayList<>();
@@ -79,6 +80,16 @@ public class Schedule extends BaseEntity {
     public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
     }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+    
+    
 
     public Subject getSubject() {
         return subject;

@@ -18,6 +18,7 @@ public class Account extends BaseEntity {
     private int typeAccount;
     private String name;
     private Instructor instructor;
+    private Student student;
     private ArrayList<Role> roles = new ArrayList<>();
 
     public ArrayList<Role> getRoles() {
@@ -76,5 +77,12 @@ public class Account extends BaseEntity {
         this.instructor = instructor;
     }
 
-    
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
 }
