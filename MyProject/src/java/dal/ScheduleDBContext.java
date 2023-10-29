@@ -5,6 +5,7 @@
 package dal;
 
 import entity.Group;
+import entity.Group_Student;
 import entity.Room;
 import entity.Subject;
 import entity.TimeSlot;
@@ -76,10 +77,11 @@ public class ScheduleDBContext extends DBContext<Schedule> {
     public ArrayList<Schedule> getTimetables(int stuid, Date from, Date to) {
         ArrayList<Schedule> timetables = new ArrayList<>();
         try {
-            String sql = "SELECT s.scheid,s.date,r.roomid,t.tid,t.tname,g.gid,g.gname,su.subid,subname,i.iid,i.iname,s.isAtt\n"
-                    + "FROM [Schedule] s INNER JOIN [Attendance] a On s.scheid=a.scheid"
-                    + "                         INNER JOIN [Student] stu ON stu.stuid = a.stuid\n"
+            String sql = "SELECT s.scheid,s.date,r.roomid,t.tid,t.tname,g.gid,g.gname,su.subid,subname,s.isAtt\n"
+                    + "FROM [Schedule] s "                 
                     + "				INNER JOIN [Group] g ON g.gid = s.gid\n"
+                    + "                         INNER JOIN [Group_Student] gs ON g.gid = gs.gid\n"
+                    + "                         INNER JOIN [Student] stu ON stu.stuid = gs.stuid\n"
                     + "				INNER JOIN [TimeSlot] t ON s.tid = t.tid\n"
                     + "				INNER JOIN [Room] r ON r.roomid = s.rid\n"
                     + "				INNER JOIN [Subject] su ON g.subid = su.subid\n"
@@ -108,6 +110,7 @@ public class ScheduleDBContext extends DBContext<Schedule> {
                 g.setId(rs.getInt("gid"));
                 g.setName(rs.getString("gname"));
                 timetable.setGroup(g);
+                //Group_Student gs = new Group_Student();
                 Subject subject = new Subject();
                 subject.setId(rs.getInt("subid"));
                 subject.setName(rs.getString("subname"));

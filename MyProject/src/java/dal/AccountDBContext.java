@@ -110,7 +110,7 @@ public class AccountDBContext extends DBContext<Account> {
         ArrayList<Account> getId = new ArrayList<>();
         try {
             String sql = "SELECT a.username,a.displayname,a.typeAccount, a.aname, s.stuid\n"
-                    + "  FROM [Account] a INNER JOIN [Studnet] s ON s.stuname = a.aname";
+                    + "  FROM [Account] a INNER JOIN [Student] s ON s.stuname = a.aname";
             if (aname != null) {
                 sql += " WHERE a.aname = ?";
             }

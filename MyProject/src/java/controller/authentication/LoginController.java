@@ -74,10 +74,9 @@ public class LoginController extends HttpServlet {
                 response.addCookie(c_pass);
             }
             if (loggedUser.getTypeAccount() == 0) {
-                request.getRequestDispatcher("view/student/studentHome.jsp").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/student/timetable");
             } else {
                 response.sendRedirect(request.getContextPath() + "/instructor/schedule");
-                //request.getRequestDispatcher("view/instructor/lecturerHome.jsp").forward(request, response);
             }
         }
 

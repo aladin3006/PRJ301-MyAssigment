@@ -69,6 +69,11 @@
                 <input type="submit" value="logout" />
             </form>
         </div> 
+        <div class="options">
+            <a href="view/student/timetable.jsp" class="option-button">Weekly Timetable</a>
+            <a href="#" class="option-button">Attendance Report</a>
+            <a href="#" class="option-button">Mark Report</a>
+        </div>
 
         <table border="">
             <tr>
@@ -86,17 +91,17 @@
                         <p>${formattedDate}</p>
                     </td>
                 </c:forEach>
-            </tr>
+            </tr>               
             <c:forEach items="${requestScope.slots}" var="s">
                 <tr>
                     <td>${s.name}</td>
 
                     <c:forEach items="${requestScope.dates}" var="d">
                         <td>
-                            <c:forEach items="${requestScope.timetables}" var="sche">
+                            <c:forEach items="${requestScope.timetables}" var="sche">}
                                 <c:if test="${sche.time.id eq s.id and sche.date eq d}">
-                                        ${sche.subject.name}-${sche.group.name}
-                                        <br>at ${sche.room.rid}<br>                                   
+                                    ${sche.subject.name}-${sche.group.name}
+                                    <br>at ${sche.room.rid}<br>                                   
                                     <c:if test="${sche.isAtt}">
                                         <c:forEach items="${requestScope.atts}" var="a">
                                             <c:if test="${a.status}"><span style="color: green;">(Attended)</span></c:if>
@@ -123,6 +128,5 @@
                 <a href="http://cms.fpt.edu.vn/" target="_blank">CMS</a>&nbsp;|&nbsp; <a href="http://library.fpt.edu.vn" target="_blank">library</a>&nbsp;|&nbsp; <a href="http://library.books24x7.com" target="_blank">books24x7</a>
                 <span id="ctl00_lblHelpdesk"></span>
         </div>
-
     </body>
 </html>

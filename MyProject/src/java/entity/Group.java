@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Group extends BaseEntity{
     private int id;
     private String name;
-    private ArrayList<Schedule> schedules = new ArrayList<>();;
+    private ArrayList<Schedule> schedules = new ArrayList<>();
     private Instructor supervisor;
     private Subject subject;
 
