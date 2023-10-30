@@ -5,11 +5,11 @@
 package controller.student;
 
 //import controller.authentication.BasedRequiredAuthenticationController;
-import dal.ScheduleDBContext;
 import dal.TimeSlotDBContext;
 import dal.AccountDBContext;
-import entity.Schedule;
+import dal.AttendanceDBContext;
 import entity.Account;
+import entity.Attendance;
 import entity.TimeSlot;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -75,8 +75,8 @@ public class TimeTableController extends HttpServlet {
             TimeSlotDBContext timeDB = new TimeSlotDBContext();
             ArrayList<TimeSlot> slots = timeDB.list();
 
-            ScheduleDBContext scheDB = new ScheduleDBContext();
-            ArrayList<Schedule> timetables = scheDB.getSchedules(studentid, dates.get(0), dates.get(dates.size() - 1));
+            AttendanceDBContext scheDB = new AttendanceDBContext();
+            ArrayList<Attendance> timetables = scheDB.getTimetableStudent(studentid, dates.get(0), dates.get(dates.size() - 1));
 
             request.setAttribute("slots", slots);
             request.setAttribute("dates", dates);   

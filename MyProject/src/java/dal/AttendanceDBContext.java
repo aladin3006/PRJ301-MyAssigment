@@ -4,11 +4,14 @@
  */
 package dal;
 
-import dal.DBContext;
-
 import entity.Attendance;
+import entity.Group;
+import entity.Room;
 import entity.Schedule;
 import entity.Student;
+import entity.Subject;
+import entity.TimeSlot;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,7 +52,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                 att.setSchedule(schedule);
                 att.setStatus(rs.getBoolean("status"));
                 att.setDescription(rs.getString("description"));
-                att.setDatetime(rs.getTimestamp("att_datetime"));
+                att.setDate(rs.getTimestamp("att_datetime"));
                 atts.add(att);
             }
 
@@ -57,6 +60,60 @@ public class AttendanceDBContext extends DBContext<Attendance> {
             Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return atts;
+    }
+
+    public ArrayList<Attendance> getTimetableStudent(int stuid, Date from, Date to) {
+        ArrayList<Attendance> timetables = new ArrayList<>();
+        try {
+            String sql = "SELECT  stu.stuid, sche.gid, g.gname, g.subid,\n"
+                    + "sche.date,  sche.isAtt, sche.scheid,\n"
+                    + "su.subid, subname, r.roomid, t.tid, t.tname, a.status \n"
+                    + "FROM [Student] stu \n"
+                    + "JOIN [Group_Student] gs on stu.stuid = gs.stuid\n"
+                    + "JOIN [Group] g on g.gid = gs.gid\n"
+                    + "JOIN [Subject] su ON g.subid = su.subid\n"
+                    + "JOIN [Schedule] sche on sche.gid = g.gid\n"
+                    + "LEFT JOIN [TimeSlot] t ON sche.tid = t.tid \n"
+                    + "LEFT JOIN [Room] r ON r.roomid = sche.rid\n"
+                    + "LEFT JOIN [Attendance] a on a.stuid = stu.stuid AND a.scheid = sche.scheid\n"
+                    + "WHERE stu.stuid = ? AND sche.[date] >= ? AND sche.[date] <= ?";   
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, stuid);
+            stm.setDate(2, from);
+            stm.setDate(3, to);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Attendance timetable = new Attendance();
+                timetable.setStatus(rs.getBoolean("status"));
+                Schedule schedule = new Schedule();
+                schedule.setId(rs.getInt("scheid"));
+                schedule.setDate(rs.getDate("date"));
+                schedule.setIsAtt(rs.getBoolean("isAtt"));
+                timetable.setSchedule(schedule);
+                Student student = new Student();
+                student.setId(rs.getInt("stuid"));
+                timetable.setStudent(student);
+                Room room = new Room();
+                room.setRid(rs.getString("roomid"));
+                timetable.setRoom(room);
+                TimeSlot t = new TimeSlot();
+                t.setId(rs.getInt("tid"));
+                t.setName(rs.getString("tname"));
+                timetable.setTime(t);
+                Group g = new Group();
+                g.setId(rs.getInt("gid"));
+                g.setName(rs.getString("gname"));
+                timetable.setGroup(g);
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("subid"));
+                subject.setName(rs.getString("subname"));
+                timetable.setSubject(subject);
+                timetables.add(timetable);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ScheduleDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return timetables;
     }
 
     @Override

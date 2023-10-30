@@ -10,10 +10,12 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class Group extends BaseEntity{
+public class Group extends BaseEntity {
+
     private int id;
     private String name;
     private ArrayList<Schedule> schedules = new ArrayList<>();
+    private ArrayList<Attendance> timetables = new ArrayList<>();
     private Instructor supervisor;
     private Subject subject;
 
@@ -39,6 +41,14 @@ public class Group extends BaseEntity{
 
     public void setSchedules(ArrayList<Schedule> schedules) {
         this.schedules = schedules;
+    }
+
+    public ArrayList<Attendance> getTimetables() {
+        return timetables;
+    }
+
+    public void setTimetables(ArrayList<Attendance> timetables) {
+        this.timetables = timetables;
     }
 
     public Instructor getSupervisor() {

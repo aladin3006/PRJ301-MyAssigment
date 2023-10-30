@@ -15,7 +15,11 @@ public class Attendance extends BaseEntity{
     private Student student;
     private boolean status;
     private String description;
-    private Date datetime;
+    private Date date;
+    private TimeSlot time;
+    private Group group;
+    private Room room;
+    private Subject subject;
 
     public Schedule getSchedule() {
         return schedule;
@@ -49,12 +53,44 @@ public class Attendance extends BaseEntity{
         this.description = description;
     }
 
-    public Date getDatetime() {
-        return datetime;
+    public Date getDate() {
+        return date;
     }
 
-    public void setDatetime(Date datetime) {
-        this.datetime = datetime;
+    public void setDate(Date date) {
+        this.date = date;
     }
-    
+
+    public TimeSlot getTime() {
+        return time;
+    }
+
+    public void setTime(TimeSlot time) {
+        this.time = time;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }  
+       
 }

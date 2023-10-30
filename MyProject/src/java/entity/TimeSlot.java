@@ -16,6 +16,7 @@ public class TimeSlot extends BaseEntity {
     private String name;
     private String description;
     private ArrayList<Schedule> schedules = new ArrayList<>();
+    private ArrayList<Attendance> timetables = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -41,12 +42,22 @@ public class TimeSlot extends BaseEntity {
         this.description = description;
     }
 
-    public ArrayList<Schedule> getSchedule() {
+    public ArrayList<Schedule> getSchedules() {
         return schedules;
     }
 
-    public void setSchedule(ArrayList<Schedule> schedules) {
+    public void setSchedules(ArrayList<Schedule> schedules) {
         this.schedules = schedules;
+    } 
+
+    public ArrayList<Attendance> getTimetables() {
+        return timetables;
     }
+
+    public void setTimetables(ArrayList<Attendance> timetables) {
+        this.timetables = timetables;
+    }
+    
+    
 
 }

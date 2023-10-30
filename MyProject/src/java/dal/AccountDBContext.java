@@ -107,7 +107,7 @@ public class AccountDBContext extends DBContext<Account> {
     }
     
     public ArrayList<Account> getStuid(String aname) {
-        ArrayList<Account> getId = new ArrayList<>();
+        ArrayList<Account> getid = new ArrayList<>();
         try {
             String sql = "SELECT a.username,a.displayname,a.typeAccount, a.aname, s.stuid\n"
                     + "  FROM [Account] a INNER JOIN [Student] s ON s.stuname = a.aname";
@@ -129,13 +129,13 @@ public class AccountDBContext extends DBContext<Account> {
                 Student students = new Student();
                 students.setId(rs.getInt("stuid"));
                 a.setStudent(students);
-                getId.add(a);
+                getid.add(a);
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return getId;
+        return getid;
     }
     
     

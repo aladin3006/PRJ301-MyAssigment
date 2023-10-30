@@ -88,8 +88,6 @@ public class Schedule extends BaseEntity {
     public void setStudent(Student student) {
         this.student = student;
     }
-    
-    
 
     public Subject getSubject() {
         return subject;

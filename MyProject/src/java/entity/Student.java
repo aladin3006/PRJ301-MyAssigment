@@ -17,7 +17,6 @@ public class Student extends BaseEntity{
     private String fullName;
     private Subject subject;
     private Department dept;
-    private ArrayList<Schedule> timetables = new ArrayList<>();
     private ArrayList<Group> groups = new ArrayList<>();
     private ArrayList<Account> getId = new ArrayList<>();
 
@@ -77,15 +76,7 @@ public class Student extends BaseEntity{
     public void setGroups(ArrayList<Group> groups) {
         this.groups = groups;
     }
-
-    public ArrayList<Schedule> getTimetables() {
-        return timetables;
-    }
-
-    public void setTimetables(ArrayList<Schedule> timetables) {
-        this.timetables = timetables;
-    }
-
+    
     public ArrayList<Account> getGetId() {
         return getId;
     }

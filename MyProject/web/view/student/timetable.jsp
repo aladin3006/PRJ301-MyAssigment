@@ -98,22 +98,21 @@
 
                     <c:forEach items="${requestScope.dates}" var="d">
                         <td>
-                            <c:forEach items="${requestScope.timetables}" var="sche">}
-                                <c:if test="${sche.time.id eq s.id and sche.date eq d}">
-                                    ${sche.subject.name}-${sche.group.name}
-                                    <br>at ${sche.room.rid}<br>                                   
-                                    <c:if test="${sche.isAtt}">
-                                        <c:forEach items="${requestScope.atts}" var="a">
-                                            <c:if test="${a.status}"><span style="color: green;">(Attended)</span></c:if>
-                                            <c:if test="${!a.status}"><span style="color: red;">(Absent)</span></c:if>
-                                        </c:forEach>
+                            <c:forEach items="${requestScope.timetables}" var="tt">
+                                <c:if test="${tt.time.id eq s.id and tt.schedule.date eq d}">                  
+                                    ${tt.subject.name}-${tt.group.name}
+                                    <br>at ${tt.room.rid}<br>                                   
+                                    <c:if test="${tt.schedule.isAtt}">
+                                            <c:if test="${tt.status}"><span style="color: green;">(Attended)</span></c:if>
+                                            <c:if test="${!tt.status}"><span style="color: red;">(Absent)</span></c:if>
                                     </c:if>
-                                    <c:if test="${!sche.isAtt}"><span style="color: red;">(Not yet)</span></c:if>
+                                    <c:if test="${!tt.schedule.isAtt}"><span style="color: red;">(Not yet)</span></c:if>
                                     <br>-<div class="label">${s.description}</div><br>
                                 </c:if>
                             </c:forEach>
                         </td>
                     </c:forEach>
+
                 </tr>  
             </c:forEach>
         </table>
