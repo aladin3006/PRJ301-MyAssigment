@@ -15,6 +15,7 @@ public class Schedule extends BaseEntity {
 
     private int id;
     private Date date;
+    private Campus campus;
     private TimeSlot time;
     private Group group;
     private int index;
@@ -31,6 +32,14 @@ public class Schedule extends BaseEntity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Campus getCampus() {
+        return campus;
+    }
+
+    public void setCampus(Campus campus) {
+        this.campus = campus;
     }
 
     public Date getDate() {

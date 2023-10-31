@@ -12,6 +12,7 @@ import entity.Schedule;
 import entity.Student;
 import entity.Instructor;
 import entity.Attendance;
+import entity.Campus;
 import java.sql.Date;
 //import entity.Department;
 import java.sql.PreparedStatement;
@@ -30,12 +31,13 @@ public class ScheduleDBContext extends DBContext<Schedule> {
     public ArrayList<Schedule> getSchedules(int iid, Date from, Date to) {
         ArrayList<Schedule> schedules = new ArrayList<>();
         try {
-            String sql = "SELECT s.scheid,s.date,r.roomid,t.tid,t.tname,g.gid,g.gname,su.subid,subname,i.iid,i.iname,s.isAtt\n"
+            String sql = "SELECT s.scheid,s.date,r.roomid,t.tid,t.tname,g.gid,g.gname,su.subid,subname,i.iid,i.iname,s.isAtt,c.cname \n"
                     + "FROM [Schedule] s INNER JOIN [Instructor] i ON i.iid = s.iid\n"
                     + "				INNER JOIN [Group] g ON g.gid = s.gid\n"
                     + "				INNER JOIN [TimeSlot] t ON s.tid = t.tid\n"
                     + "				INNER JOIN [Room] r ON r.roomid = s.rid\n"
                     + "				INNER JOIN [Subject] su ON g.subid = su.subid\n"
+                    + "                         INNER JOIN [Campus] c ON i.cid = c.cid\n"
                     + "		WHERE i.iid = ? AND s.[date] >= ? AND s.[date] <= ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, iid);
@@ -65,6 +67,9 @@ public class ScheduleDBContext extends DBContext<Schedule> {
                 subject.setId(rs.getInt("subid"));
                 subject.setName(rs.getString("subname"));
                 schedule.setSubject(subject);
+                Campus campus = new Campus();
+                campus.setName(rs.getString("cname"));
+                schedule.setCampus(campus);
                 schedules.add(schedule);
             }
         } catch (SQLException ex) {
@@ -199,12 +204,13 @@ public class ScheduleDBContext extends DBContext<Schedule> {
     @Override
     public Schedule get(Schedule entity) {
         try {
-            String sql = "SELECT s.scheid,s.date,r.roomid,t.tid,t.description,g.gid,g.gname,su.subid,subname,i.iid,i.iname,s.isAtt\n"
+            String sql = "SELECT s.scheid,s.date,r.roomid,t.tid,t.description,g.gid,g.gname,su.subid,subname,i.iid,i.iname,s.isAtt,c.cname\n"
                     + "FROM [Schedule] s INNER JOIN [Instructor] i ON i.iid = s.iid\n"
                     + "                         INNER JOIN [Group] g ON g.gid = s.gid\n"
                     + "				INNER JOIN [TimeSlot] t ON s.tid = t.tid\n"
                     + "				INNER JOIN [Room] r ON r.roomid = s.rid\n"
                     + "				INNER JOIN [Subject] su ON g.subid = su.subid\n"
+                    + "                         INNER JOIN [Campus] c ON i.cid = c.cid\n"
                     + "		WHERE s.scheid = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, entity.getId());
@@ -229,6 +235,9 @@ public class ScheduleDBContext extends DBContext<Schedule> {
                 subject.setId(rs.getInt("subid"));
                 subject.setName(rs.getString("subname"));
                 schedule.setSubject(subject);
+                Campus campus = new Campus();
+                campus.setName(rs.getString("cname"));
+                schedule.setCampus(campus);
                 return schedule;
             }
         } catch (SQLException ex) {

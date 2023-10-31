@@ -5,6 +5,7 @@
 package dal;
 
 import entity.Attendance;
+import entity.Campus;
 import entity.Group;
 import entity.Room;
 import entity.Schedule;
@@ -28,7 +29,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
     public ArrayList<Attendance> getAttendances(int scheid) {
         ArrayList<Attendance> atts = new ArrayList<>();
         try {
-            String sql = "SELECT s.stuid,s.stuname,ISNULL(a.status,0) as [status], \n"
+            String sql = "SELECT s.stuid,s.stuname,stu_code,stud_fullname,ISNULL(a.status,0) as [status], \n"
                     + "  ISNULL(a.description,'') as [description],\n"
                     + "  ISNULL(a.att_datetime, GETDATE()) as [att_datetime],\n"
                     + "  a.scheid\n"
@@ -47,12 +48,14 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                 Schedule schedule = new Schedule();
                 student.setId(rs.getInt("stuid"));
                 student.setName(rs.getString("stuname"));
+                student.setCode(rs.getString("stu_code"));
+                student.setFullName(rs.getString("stud_fullname"));
                 schedule.setId(scheid);
                 att.setStudent(student);
                 att.setSchedule(schedule);
                 att.setStatus(rs.getBoolean("status"));
                 att.setDescription(rs.getString("description"));
-                att.setDate(rs.getTimestamp("att_datetime"));
+                att.setDatetime(rs.getTimestamp("att_datetime"));
                 atts.add(att);
             }
 
@@ -67,12 +70,13 @@ public class AttendanceDBContext extends DBContext<Attendance> {
         try {
             String sql = "SELECT  stu.stuid, sche.gid, g.gname, g.subid,\n"
                     + "sche.date,  sche.isAtt, sche.scheid,\n"
-                    + "su.subid, subname, r.roomid, t.tid, t.tname, a.status \n"
+                    + "su.subid, subname, r.roomid, t.tid, t.tname, a.status, c.cname \n"
                     + "FROM [Student] stu \n"
                     + "JOIN [Group_Student] gs on stu.stuid = gs.stuid\n"
                     + "JOIN [Group] g on g.gid = gs.gid\n"
                     + "JOIN [Subject] su ON g.subid = su.subid\n"
                     + "JOIN [Schedule] sche on sche.gid = g.gid\n"
+                    + "JOIN [Campus] c ON stu.cid = c.cid\n"
                     + "LEFT JOIN [TimeSlot] t ON sche.tid = t.tid \n"
                     + "LEFT JOIN [Room] r ON r.roomid = sche.rid\n"
                     + "LEFT JOIN [Attendance] a on a.stuid = stu.stuid AND a.scheid = sche.scheid\n"
@@ -108,6 +112,9 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                 subject.setId(rs.getInt("subid"));
                 subject.setName(rs.getString("subname"));
                 timetable.setSubject(subject);
+                Campus campus = new Campus();
+                campus.setName(rs.getString("cname"));
+                timetable.setCampus(campus);
                 timetables.add(timetable);
             }
         } catch (SQLException ex) {

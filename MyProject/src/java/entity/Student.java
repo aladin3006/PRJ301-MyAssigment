@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class Student extends BaseEntity{
     private int id;
-    private int code;
+    private String code;
     private String name;
     private String fullName;
     private Subject subject;
@@ -20,11 +20,11 @@ public class Student extends BaseEntity{
     private ArrayList<Group> groups = new ArrayList<>();
     private ArrayList<Account> getId = new ArrayList<>();
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

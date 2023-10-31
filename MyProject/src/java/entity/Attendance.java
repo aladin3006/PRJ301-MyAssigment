@@ -10,12 +10,14 @@ import java.util.Date;
  *
  * @author Admin
  */
-public class Attendance extends BaseEntity{
+public class Attendance extends BaseEntity {
+
     private Schedule schedule;
     private Student student;
     private boolean status;
     private String description;
-    private Date date;
+    private Campus campus;
+    private Date datetime;
     private TimeSlot time;
     private Group group;
     private Room room;
@@ -53,12 +55,20 @@ public class Attendance extends BaseEntity{
         this.description = description;
     }
 
-    public Date getDate() {
-        return date;
+    public Campus getCampus() {
+        return campus;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setCampus(Campus campus) {
+        this.campus = campus;
+    }
+
+    public Date getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(Date datetime) {
+        this.datetime = datetime;
     }
 
     public TimeSlot getTime() {
@@ -91,6 +101,6 @@ public class Attendance extends BaseEntity{
 
     public void setSubject(Subject subject) {
         this.subject = subject;
-    }  
-       
+    }
+
 }
