@@ -140,7 +140,7 @@
                     <a class="header__link panel" href="schedule">Timetable</a>&nbsp;|
                 </li>
                 <li class="header__item">
-                    <a class="header__link panel" href="#">Student List</a>
+                    <a class="header__link panel" href="studentlist">Student List</a>
                 </li>
             </ul>
             <div>

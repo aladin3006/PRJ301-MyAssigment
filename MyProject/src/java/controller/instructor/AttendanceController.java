@@ -80,7 +80,6 @@ public class AttendanceController extends HttpServlet {
         ScheduleDBContext scheDB = new ScheduleDBContext();
         scheDB.addAttendances(sche);
         response.getWriter().println("done");
-        request.getRequestDispatcher("../view/instructor/lecturerHome.jsp").forward(request, response);
 
     }
 

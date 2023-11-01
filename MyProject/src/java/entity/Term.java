@@ -8,7 +8,8 @@ package entity;
  *
  * @author Admin
  */
-public class Department extends  BaseEntity{
+public class Term extends BaseEntity {
+
     private int id;
     private String name;
 
@@ -27,5 +28,5 @@ public class Department extends  BaseEntity{
     public void setName(String name) {
         this.name = name;
     }
-       
+
 }

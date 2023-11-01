@@ -18,6 +18,24 @@ public class Group extends BaseEntity {
     private ArrayList<Attendance> timetables = new ArrayList<>();
     private Instructor supervisor;
     private Subject subject;
+    private Department department;
+    private Term term;
+
+    public Term getTerm() {
+        return term;
+    }
+
+    public void setTerm(Term term) {
+        this.term = term;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
 
     public int getId() {
         return id;
