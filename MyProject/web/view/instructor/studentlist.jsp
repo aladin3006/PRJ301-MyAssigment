@@ -33,7 +33,7 @@
                 background-color: #6b90da;
                 font-weight: normal;
             }
-            td {
+            .td {
                 vertical-align: top;
                 color: #337AB7;
                 padding: 2px;
@@ -42,16 +42,9 @@
                 border-bottom: 1px solid #ccc;
             }
         </style>
-        <script>
-            function showCourses(did) {
-                $.ajax({
-                    url: "StudentListController?did=" + did
-                });
-            }
-        </script>
     </head>
     <body>
-        <table border="1">
+        <table border="1px">
             <tr class="th">
                 <th class="limit">CAMPUS</th>
                 <th class="limit">TERM</th>
@@ -59,48 +52,74 @@
                 <th>COURSE</th>
                 <th>GROUP</th>
             </tr>
+            <tr>
+                <td>${requestScope.schedules[1].campus.name}</td>
+                <td>
+                    <c:forEach items="${requestScope.terms}" var="t">
+                        <form action="studentlist" method="GET">
+                            <input type="hidden" name="termid" value="${t.id}" />
+                            <input type="submit" value="${t.name}" />
+                        </form>
+                    </c:forEach>
+                </td>
+                <td>
+                    <c:forEach items="${requestScope.depts}" var="d">
+                        <form action="studentlist" method="GET">
+                            <input type="hidden" name="did" value="${d.id}" />
+                            <input type="submit" value="${d.name}" />
+                        </form>
+                    </c:forEach>
+                </td>
+                <td>
+                    <c:forEach items="${requestScope.subjects}" var="s">
+                        <form action="studentlist" method="GET">
+                            <input type="hidden" name="subid" value="${s.subject.id}" />
+                            <input type="submit" value="${s.subject.name}" />
+                        </form>
+                    </c:forEach>
+                </td>
+                <td>
+                    <c:forEach items="${requestScope.groups1}" var="g">
+                        <form action="studentlist" method="GET">
+                            <input type="hidden" name="gid" value="${g.id}" />
+                            <input type="submit" value="${g.name}" />
+                        </form>${g.name}
+                    </c:forEach>
+                    <c:forEach items="${requestScope.groups2}" var="g">
+                        <form action="studentlist" method="GET">
+                            <input type="hidden" name="gid" value="${g.id}" />
+                            <input type="submit" value="${g.name}" />
+                        </form>${g.name}
+                    </c:forEach>
+                </td>
+            </tr>
+        </table>
+        <table border="1px"> 
+            <tr class="th">
+                <td>INDEX</td>
+                <td>IMAGE</td>
+                <td>MEMBER</td>
+                <td>CODE</td>
+                <td>FULL NAME</td>
 
-            <tbody>
+            </tr>
+            <c:forEach items="${requestScope.students}" var="stu" varStatus="index">
                 <tr>
-                    <td>${requestScope.schedules[1].campus.name}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tbody>
-
-            <c:forEach items="${requestScope.terms}" var="term">
-                <tr>
-                    <td></td>
-                    <td>${term.name}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </c:forEach>
-
-            <c:forEach items="${requestScope.depts}" var="dept">
-                <tr>
-                    <td></td>
-                    <td></td>
                     <td>
-                        <input type="text" value="${dept.name}" onclick="showCourses(${dept.did})">
+                        ${index.index + 1}
                     </td>
                     <td></td>
-                    <td></td>
-                </tr>
+                    <td class="td">${stu.student.name}${stu.student.code}
+                    </td>
+                    <td>${stu.student.code}
+                        <input type="hidden" name="stuid" value="${stu.student.id}"/>
+                    </td>
+                    <td>${stu.student.fullName}
+                        <input type="hidden" name="stuid" value="${stu.student.id}"/>
+                    </td>
+                </tr>   
             </c:forEach>
-
-            <c:forEach items="${requestScope.groups}" var="g">
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>${g.subject.name}</td>
-                    <td>${g.name}</td>
-                </tr>
-            </c:forEach>
-        </table>
+        </table> 
     </body>
 </html>
+

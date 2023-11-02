@@ -4,7 +4,7 @@
  */
 package dal;
 
-import entity.Department;
+import entity.Subject;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,47 +16,47 @@ import java.util.logging.Logger;
  *
  * @author Admin
  */
-public class DepartmentDBContext extends DBContext<Department> {
+public class SubjectDBContext extends DBContext<Subject> {
 
     @Override
-    public ArrayList<Department> list() {
-        ArrayList<Department> depts = new ArrayList<>();
+    public ArrayList<Subject> list() {
+        ArrayList<Subject> subs = new ArrayList<>();
         try {
-            String sql = "SELECT [did]\n"
-                    + "      ,[dname]\n"
-                    + "  FROM [Department]";
+            String sql = "SELECT [subid]\n"
+                    + "      ,[subname]\n"
+                    + "  FROM [Subject]";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                Department d = new Department();
-                d.setId(rs.getInt("did"));
-                d.setName(rs.getString("dname"));
-                depts.add(d);
+                Subject s = new Subject();
+                s.setId(rs.getInt("subid"));
+                s.setName(rs.getString("subname"));
+                subs.add(s);
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SubjectDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return depts;
+        return subs;
     }
 
     @Override
-    public void insert(Department entity) {
+    public void insert(Subject entity) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void update(Department entity) {
+    public void update(Subject entity) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void delete(Department entity) {
+    public void delete(Subject entity) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public Department get(Department entity) {
+    public Subject get(Subject entity) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
