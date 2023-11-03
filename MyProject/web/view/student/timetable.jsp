@@ -129,7 +129,7 @@
                     <a class="header__link panel" href="timetable">Timetable</a>&nbsp;|
                 </li>
                 <li class="header__item">
-                    <a class="header__link panel" href="#">Grading Management</a>
+                    <a class="header__link panel" href="courses">Grading Management</a>    
                 </li>
             </ul>
             <div>

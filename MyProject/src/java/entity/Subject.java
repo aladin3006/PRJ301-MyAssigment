@@ -10,12 +10,48 @@ import java.sql.Date;
  *
  * @author Admin
  */
-public class Subject extends BaseEntity{
+public class Subject extends BaseEntity {
+
     private int id;
     private String name;
-    private String semester;
+    private String description;
     private Date startdate;
     private Department dept;
+    private Group group;
+    private Student student;
+    private Term term;
+
+    public Term getTerm() {
+        return term;
+    }
+
+    public void setTerm(Term term) {
+        this.term = term;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
 
     public int getId() {
         return id;
@@ -33,14 +69,6 @@ public class Subject extends BaseEntity{
         this.name = name;
     }
 
-    public String getSemester() {
-        return semester;
-    }
-
-    public void setSemester(String semester) {
-        this.semester = semester;
-    }
-
     public Date getStartdate() {
         return startdate;
     }
@@ -56,5 +84,5 @@ public class Subject extends BaseEntity{
     public void setDept(Department dept) {
         this.dept = dept;
     }
-    
+
 }

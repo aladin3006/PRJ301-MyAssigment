@@ -17,7 +17,6 @@
                 width: 90%;
                 margin: 0 auto;
             }
-
             td {
                 vertical-align: top;
             }
@@ -44,64 +43,51 @@
         </style>
     </head>
     <body>
-        <table border="1px">
+        <table>
             <tr class="th">
-                <th class="limit">CAMPUS</th>
-                <th class="limit">TERM</th>
-                <th>DEPARTMENT</th>
-                <th>COURSE</th>
-                <th>GROUP</th>
+                <td class="limit">CAMPUS</td>
+                <td class="limit">TERM</td>
+                <td>DEPARTMENT</td>
+                <td>COURSE</td>
+                <td>GROUP</td>
             </tr>
             <tr>
                 <td>${requestScope.schedules[1].campus.name}</td>
                 <td>
                     <c:forEach items="${requestScope.terms}" var="t">
-                        <form action="studentlist" method="GET">
-                            <input type="hidden" name="termid" value="${t.id}" />
-                            <input type="submit" value="${t.name}" />
-                        </form>
+                        <a href="studentlist?termid=${t.id}">${t.name}</a>
                     </c:forEach>
                 </td>
                 <td>
                     <c:forEach items="${requestScope.depts}" var="d">
-                        <form action="studentlist" method="GET">
-                            <input type="hidden" name="did" value="${d.id}" />
-                            <input type="submit" value="${d.name}" />
-                        </form>
+                        <a href="studentlist?did=${d.id}">${d.name}</a><br>
                     </c:forEach>
                 </td>
                 <td>
                     <c:forEach items="${requestScope.subjects}" var="s">
-                        <form action="studentlist" method="GET">
-                            <input type="hidden" name="subid" value="${s.subject.id}" />
-                            <input type="submit" value="${s.subject.name}" />
-                        </form>
+                        <a href="studentlist?subid=${s.subject.id}">${s.subject.description}(${s.subject.name})</a><br>
                     </c:forEach>
                 </td>
                 <td>
                     <c:forEach items="${requestScope.groups1}" var="g">
-                        <form action="studentlist" method="GET">
-                            <input type="hidden" name="gid" value="${g.id}" />
-                            <input type="submit" value="${g.name}" />
-                        </form>${g.name}
+                        <a href="studentlist?gid=${g.id}">${g.name}</a>
                     </c:forEach>
                     <c:forEach items="${requestScope.groups2}" var="g">
-                        <form action="studentlist" method="GET">
-                            <input type="hidden" name="gid" value="${g.id}" />
-                            <input type="submit" value="${g.name}" />
-                        </form>${g.name}
+                        <a href="studentlist?gid=${g.id}">${g.name}</a>
                     </c:forEach>
                 </td>
             </tr>
         </table>
-        <table border="1px"> 
+
+        <p>...then see student list <span style="color: #6b90da; font-weight: bold;">(Export data)</span></p>
+
+        <table> 
             <tr class="th">
                 <td>INDEX</td>
                 <td>IMAGE</td>
                 <td>MEMBER</td>
                 <td>CODE</td>
                 <td>FULL NAME</td>
-
             </tr>
             <c:forEach items="${requestScope.students}" var="stu" varStatus="index">
                 <tr>
@@ -109,8 +95,10 @@
                         ${index.index + 1}
                     </td>
                     <td></td>
-                    <td class="td">${stu.student.name}${stu.student.code}
+                    <td class="td">${stu.student.name}${stu.student.code}<br>
+                        <a href="/MyProject/student/courses?stuid=${stu.student.id}">View Grade</a>
                     </td>
+
                     <td>${stu.student.code}
                         <input type="hidden" name="stuid" value="${stu.student.id}"/>
                     </td>
@@ -119,7 +107,7 @@
                     </td>
                 </tr>   
             </c:forEach>
-        </table> 
+        </table>
     </body>
 </html>
 

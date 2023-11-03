@@ -25,7 +25,7 @@ public class GroupDBContext extends DBContext<Group> {
     public ArrayList<Group> getSubjectbyDepartment(int did) {
         ArrayList<Group> subjects = new ArrayList<>();
         try {
-            String sql = "SELECT d.did,d.dname, s.subid,s.subname \n"
+            String sql = "SELECT d.did,d.dname, s.subid,s.subname,s.description \n"
                     + "FROM [Subject] s INNER JOIN [Department] d ON d.did = s.did\n"
                     + "		WHERE d.did=?";
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -36,6 +36,7 @@ public class GroupDBContext extends DBContext<Group> {
                 Subject subject = new Subject();
                 subject.setId(rs.getInt("subid"));
                 subject.setName(rs.getString("subname"));
+                subject.setDescription(rs.getString("description"));
                 Department department = new Department();
                 department.setId(rs.getInt("did"));
                 department.setName(rs.getString("dname"));
