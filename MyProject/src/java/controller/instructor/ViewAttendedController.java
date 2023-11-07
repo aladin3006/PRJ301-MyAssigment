@@ -21,7 +21,32 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class AttendanceController extends HttpServlet {
+public class ViewAttendedController extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        ScheduleDBContext scheDB = new ScheduleDBContext();
+        Schedule s = new Schedule();
+        int id = Integer.parseInt(request.getParameter("id"));
+        s.setId(id);
+        Schedule sche = scheDB.get(s);
+        request.setAttribute("sche", sche);
+
+        AttendanceDBContext attDB = new AttendanceDBContext();
+        ArrayList<Attendance> attendances = attDB.getAttendances(id);
+
+        request.setAttribute("atts", attendances);
+        request.getRequestDispatcher("../view/instructor/attendedSuccess.jsp").forward(request, response);
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -35,18 +60,7 @@ public class AttendanceController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ScheduleDBContext scheDB = new ScheduleDBContext();
-        Schedule s = new Schedule();
-        int id = Integer.parseInt(request.getParameter("id"));
-        s.setId(id);
-        Schedule sche = scheDB.get(s);
-        request.setAttribute("sche", sche);
-
-        AttendanceDBContext attDB = new AttendanceDBContext();
-        ArrayList<Attendance> attendances = attDB.getAttendances(id);
-
-        request.setAttribute("atts", attendances);
-        request.getRequestDispatcher("../view/instructor/attendance.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -60,24 +74,7 @@ public class AttendanceController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String[] stuids = request.getParameterValues("stuid");
-        Schedule sche = new Schedule();
-        sche.setId(Integer.parseInt(request.getParameter("scheid")));
-        ArrayList<Attendance> atts = new ArrayList<>();
-        for (String stuid : stuids) {
-            int id = Integer.parseInt(stuid);
-            Attendance a = new Attendance();
-            Student s = new Student();
-            s.setId(id);
-            a.setStudent(s);
-            a.setSchedule(sche);
-            a.setDescription(request.getParameter("description" + stuid));
-            a.setStatus(request.getParameter("status" + stuid).equals("Attended"));
-            atts.add(a);
-        }
-        sche.setAtts(atts);
-        ScheduleDBContext scheDB = new ScheduleDBContext();
-        scheDB.addAttendances(sche);
+        processRequest(request, response);
     }
 
     /**

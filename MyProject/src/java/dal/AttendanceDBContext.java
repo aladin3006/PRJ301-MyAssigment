@@ -34,10 +34,10 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                     + "  ISNULL(a.att_datetime, GETDATE()) as [att_datetime],\n"
                     + "  a.scheid\n"
                     + "  FROM [Schedule] sche INNER JOIN [Group] g ON sche.gid = g.gid\n"
-                    + "								INNER JOIN [Group_Student] gs ON g.gid = gs.gid\n"
-                    + "								INNER JOIN [Student] s ON s.stuid = gs.stuid\n"
-                    + "								LEFT JOIN Attendance a ON s.stuid = a.stuid \n"
-                    + "								AND sche.scheid = a.scheid\n"
+                    + "			      INNER JOIN [Group_Student] gs ON g.gid = gs.gid\n"
+                    + "			      INNER JOIN [Student] s ON s.stuid = gs.stuid\n"
+                    + "			      LEFT JOIN Attendance a ON s.stuid = a.stuid \n"
+                    + "			      AND sche.scheid = a.scheid\n"
                     + "	WHERE sche.scheid = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, scheid);

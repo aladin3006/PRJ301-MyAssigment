@@ -1,9 +1,3 @@
-<%-- 
-    Document   : attendance
-    Created on : Oct 23, 2023, 10:56:10 PM
-    Author     : Admin
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -108,17 +102,6 @@
                 padding-left: 15px;
             }
         </style>
-        <script>
-            function insertStudents(id)
-            {
-                var conf = confirm("Sure attended?");
-                if (conf) {
-                    document.getElementById("attendanceForm").submit();
-                    window.location.href = 'attended?id='+id;
-                }
-            }
-
-        </script>
     </head>
     <body>
         <div class="row">
@@ -162,20 +145,24 @@
 
         <div class="">
             Attendance activities : ${requestScope.sche.group.name}-${requestScope.sche.subject.name}-${requestScope.sche.room.rid}
-            : ${requestScope.sche.time.description}
+            : ${requestScope.sche.time.description}  ${requestScope.sche.instructor.name}
+            <input type="hidden" value="${requestScope.sche.id}" name="scheid"/>
         </div>
 
-        <form action="att" method="POST" id="attendanceForm">
+        <form action="attended" method="POST">
+            <input type="hidden" value="${requestScope.sche.id}" name="scheid"/>
             <table border="1px"> 
                 <tr>
                     <td>INDEX</td>
                     <td>Group</td>
                     <td>CODE</td>
                     <td>FULL NAME</td>
-                    <td>ATTENDED</td>
-                    <td>ABSENT</td>
-                    <td>COMMENT</td>
                     <td>IMAGE</td>
+                    <td>STATUS</td>
+                    <td>COMMENT</td>
+                    <td>TAKER</td>
+                    <td>RECORD TIME</td>
+
                 </tr>
                 <c:forEach items="${requestScope.atts}" var="a" varStatus="index">
                     <tr>
@@ -184,35 +171,23 @@
                         </td>
                         <td>${requestScope.sche.group.name}</td>
                         <td>${a.student.code}
-                            <input type="hidden" name="stuid" value="${a.student.id}"/>
                         </td>
                         <td>${a.student.fullName}
                         </td>
-                        <td>
-                            <input type="radio"
-                                   <c:if test="${!a.status}">
-                                       checked="checked"
-                                   </c:if>
-                                   name="status${a.student.id}" value="Absent"/>Absent
-                        </td>
-                        <td>
-                            <input type="radio"
-                                   <c:if test="${a.status}">
-                                       checked="checked"
-                                   </c:if>
-                                   name="status${a.student.id}" value="Attended "/>Attended
-                        </td>
-                        <td>
-                            <input type="text" value="${a.description}"
-                                   name="description${a.student.id}"/>
-                        </td>
                         <td></td>
+                        <td>
+                            <c:if test="${a.status}">Attended</c:if>
+                            <c:if test="${!a.status}">Absent</c:if>
+                            <td>
+                            ${a.description}
+                        </td>
+                        <td>
+                            ${requestScope.sche.instructor.name} 
+                        </td>
+                        <td>${a.datetime}</td>
                     </tr>   
-
                 </c:forEach>
             </table>
-            <input type="hidden" value="${requestScope.sche.id}" name="scheid"/>
-            <input type="button" value="Save" onclick="insertStudents(${requestScope.sche.id})"/>
         </form>
     </body>
 </html>

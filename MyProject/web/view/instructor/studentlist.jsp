@@ -79,8 +79,9 @@
             </tr>
         </table>
 
+        <c:set var="stu" value="${requestScope.students}"/>
+        <c:if test="${not empty stu}">
         <p>...then see student list <span style="color: #6b90da; font-weight: bold;">(Export data)</span></p>
-
         <table> 
             <tr class="th">
                 <td>INDEX</td>
@@ -108,6 +109,7 @@
                 </tr>   
             </c:forEach>
         </table>
+        </c:if>
     </body>
 </html>
 

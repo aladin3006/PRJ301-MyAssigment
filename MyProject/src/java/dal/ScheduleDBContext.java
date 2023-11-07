@@ -78,56 +78,6 @@ public class ScheduleDBContext extends DBContext<Schedule> {
         return schedules;
     }
 
-//    public ArrayList<Schedule> getTimetables(int stuid, Date from, Date to) {
-//        ArrayList<Schedule> timetables = new ArrayList<>();
-//        try {
-//            String sql = "SELECT s.scheid,s.date,r.roomid,t.tid,t.tname,g.gid,g.gname,su.subid,subname,s.isAtt,stu.stuid\n"
-//                    + "FROM [Schedule] s INNER JOIN [Group] g ON g.gid = s.gid\n"
-//                    + "                         INNER JOIN [Group_Student] gs ON g.gid = gs.gid\n"
-//                    + "                         INNER JOIN [Student] stu ON stu.stuid = gs.stuid\n"
-//                    + "				INNER JOIN [TimeSlot] t ON s.tid = t.tid\n"
-//                    + "				INNER JOIN [Room] r ON r.roomid = s.rid\n"
-//                    + "				INNER JOIN [Subject] su ON g.subid = su.subid\n"
-//                    + "		WHERE stu.stuid = ? AND s.[date] >= ? AND s.[date] <= ?";
-//            PreparedStatement stm = connection.prepareStatement(sql);
-//            stm.setInt(1, stuid);
-//            stm.setDate(2, from);
-//            stm.setDate(3, to);
-//            ResultSet rs = stm.executeQuery();
-//            while (rs.next()) {
-//                Schedule timetable = new Schedule();
-//                timetable.setId(rs.getInt("scheid"));
-//                timetable.setDate(rs.getDate("date"));
-//                timetable.setIsAtt(rs.getBoolean("isAtt"));
-//                Student student = new Student();
-//                student.setId(rs.getInt("stuid"));
-//                timetable.setStudent(student);
-//                Room room = new Room();
-//                room.setRid(rs.getString("roomid"));
-//                timetable.setRoom(room);
-//                TimeSlot t = new TimeSlot();
-//                t.setId(rs.getInt("tid"));
-//                t.setName(rs.getString("tname"));
-//                timetable.setTime(t);
-//                Group g = new Group();
-//                g.setId(rs.getInt("gid"));
-//                g.setName(rs.getString("gname"));
-//                timetable.setGroup(g);
-//                Group_Student gs = new Group_Student();
-//                gs.setId(rs.getInt("gid"));
-//                timetable.setGs(gs);
-//                Subject subject = new Subject();
-//                subject.setId(rs.getInt("subid"));
-//                subject.setName(rs.getString("subname"));
-//                timetable.setSubject(subject);
-//                timetables.add(timetable);
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ScheduleDBContext.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return timetables;
-//    }
-
     public void addAttendances(Schedule sche) {
         try {
             connection.setAutoCommit(false);
