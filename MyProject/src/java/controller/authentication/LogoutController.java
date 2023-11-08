@@ -35,7 +35,7 @@ public class LogoutController extends HttpServlet {
         c_pass.setMaxAge(-1);
         response.addCookie(c_pass);
         response.addCookie(c_user);
-        request.getRequestDispatcher("view/authentication/login.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/login");;
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
