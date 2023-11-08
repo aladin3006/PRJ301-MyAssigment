@@ -35,7 +35,7 @@ public abstract class BasedAuthorizationController extends BasedRequiredAuthenti
         if (isAuthorized(LoggedUser, request)) {
             doPost(request, response, LoggedUser, LoggedUser.getRoles());
         } else {
-            response.getWriter().println("access denied!");
+            response.sendRedirect(request.getContextPath() + "/login");
         }
     }
 
@@ -44,7 +44,7 @@ public abstract class BasedAuthorizationController extends BasedRequiredAuthenti
         if (isAuthorized(LoggedUser, request)) {
             doGet(request, response, LoggedUser, LoggedUser.getRoles());
         } else {
-            response.getWriter().println("access denied!");
+            response.sendRedirect(request.getContextPath() + "/login");
         }
     }
 

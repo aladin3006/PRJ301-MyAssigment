@@ -4,12 +4,14 @@
  */
 package controller.student;
 
-//import controller.authentication.BasedRequiredAuthenticationController;
+import controller.authentication.BasedAuthorizationController;
+import controller.authentication.BasedRequiredAuthenticationController;
 import dal.TimeSlotDBContext;
 import dal.AccountDBContext;
 import dal.AttendanceDBContext;
 import entity.Account;
 import entity.Attendance;
+import entity.Role;
 import entity.TimeSlot;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,7 +31,7 @@ import util.DateTimeHelper;
  *
  * @author Admin
  */
-public class TimeTableController extends HttpServlet {
+public class TimeTableController extends BasedAuthorizationController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -98,7 +100,7 @@ public class TimeTableController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)//, Account account)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account,ArrayList<Role> roles)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -112,7 +114,7 @@ public class TimeTableController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)//, Account account)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, Account account,ArrayList<Role> roles)
             throws ServletException, IOException {
         processRequest(request, response);
     }

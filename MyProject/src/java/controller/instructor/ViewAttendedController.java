@@ -4,10 +4,14 @@
  */
 package controller.instructor;
 
+import controller.authentication.BasedAuthorizationController;
+import controller.authentication.BasedRequiredAuthenticationController;
 import dal.AttendanceDBContext;
 import dal.ScheduleDBContext;
+import entity.Account;
 import entity.Student;
 import entity.Attendance;
+import entity.Role;
 import entity.Schedule;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,7 +25,7 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class ViewAttendedController extends HttpServlet {
+public class ViewAttendedController extends BasedAuthorizationController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,7 +62,7 @@ public class ViewAttendedController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account,ArrayList<Role> roles)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -72,7 +76,7 @@ public class ViewAttendedController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, Account account,ArrayList<Role> roles)
             throws ServletException, IOException {
         processRequest(request, response);
     }

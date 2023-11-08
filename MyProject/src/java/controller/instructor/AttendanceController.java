@@ -4,10 +4,14 @@
  */
 package controller.instructor;
 
+import controller.authentication.BasedAuthorizationController;
+import controller.authentication.BasedRequiredAuthenticationController;
 import dal.AttendanceDBContext;
 import dal.ScheduleDBContext;
+import entity.Account;
 import entity.Student;
 import entity.Attendance;
+import entity.Role;
 import entity.Schedule;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,7 +25,7 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class AttendanceController extends HttpServlet {
+public class AttendanceController extends BasedAuthorizationController {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -33,7 +37,7 @@ public class AttendanceController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account,ArrayList<Role> roles)
             throws ServletException, IOException {
         ScheduleDBContext scheDB = new ScheduleDBContext();
         Schedule s = new Schedule();
@@ -58,7 +62,7 @@ public class AttendanceController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, Account account,ArrayList<Role> roles)
             throws ServletException, IOException {
         String[] stuids = request.getParameterValues("stuid");
         Schedule sche = new Schedule();

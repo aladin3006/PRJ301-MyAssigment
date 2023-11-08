@@ -4,6 +4,8 @@
  */
 package controller.instructor;
 
+import controller.authentication.BasedAuthorizationController;
+import controller.authentication.BasedRequiredAuthenticationController;
 import dal.AccountDBContext;
 import dal.CampusDBContext;
 import dal.GroupDBContext;
@@ -14,6 +16,7 @@ import entity.Account;
 import entity.Campus;
 import entity.Department;
 import entity.Group;
+import entity.Role;
 import entity.Subject;
 import entity.Term;
 import jakarta.servlet.ServletException;
@@ -28,7 +31,7 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class StudentListController extends HttpServlet {
+public class StudentListController extends BasedAuthorizationController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -116,7 +119,7 @@ public class StudentListController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account,ArrayList<Role> roles)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -130,7 +133,7 @@ public class StudentListController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, Account account,ArrayList<Role> roles)
             throws ServletException, IOException {
         processRequest(request, response);
     }

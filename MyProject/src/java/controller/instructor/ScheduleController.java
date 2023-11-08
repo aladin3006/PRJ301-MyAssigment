@@ -4,7 +4,8 @@
  */
 package controller.instructor;
 
-//import controller.authentication.BasedRequiredAuthenticationController;
+import controller.authentication.BasedAuthorizationController;
+import controller.authentication.BasedRequiredAuthenticationController;
 import dal.ScheduleDBContext;
 import dal.TimeSlotDBContext;
 import dal.AccountDBContext;
@@ -12,6 +13,7 @@ import dal.CampusDBContext;
 import entity.Schedule;
 import entity.Account;
 import entity.Campus;
+import entity.Role;
 import entity.TimeSlot;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -31,7 +33,7 @@ import util.DateTimeHelper;
  *
  * @author Admin
  */
-public class ScheduleController extends HttpServlet {
+public class ScheduleController extends BasedAuthorizationController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -104,7 +106,7 @@ public class ScheduleController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)//, Account account)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account,ArrayList<Role> roles)//, Account account)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -118,7 +120,7 @@ public class ScheduleController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)//, Account account)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, Account account,ArrayList<Role> roles)
             throws ServletException, IOException {
         processRequest(request, response);
     }
