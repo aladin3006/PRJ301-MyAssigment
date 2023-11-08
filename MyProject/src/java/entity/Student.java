@@ -10,15 +10,25 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class Student extends BaseEntity{
+public class Student extends BaseEntity {
+
     private int id;
     private String code;
     private String name;
     private String fullName;
+    private String image;
     private Subject subject;
     private Department dept;
     private ArrayList<Group> groups = new ArrayList<>();
     private ArrayList<Account> getId = new ArrayList<>();
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getCode() {
         return code;
@@ -44,7 +54,6 @@ public class Student extends BaseEntity{
         this.fullName = fullName;
     }
 
-    
     public Subject getSubject() {
         return subject;
     }
@@ -76,7 +85,7 @@ public class Student extends BaseEntity{
     public void setGroups(ArrayList<Group> groups) {
         this.groups = groups;
     }
-    
+
     public ArrayList<Account> getGetId() {
         return getId;
     }
@@ -84,8 +93,5 @@ public class Student extends BaseEntity{
     public void setGetId(ArrayList<Account> getId) {
         this.getId = getId;
     }
-    
-    
-    
-    
+
 }

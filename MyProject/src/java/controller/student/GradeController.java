@@ -84,11 +84,12 @@ public class GradeController extends HttpServlet {
             request.setAttribute("subs", subs);
         }
         String stuid_raw = request.getParameter("stuid");
-        stuid_raw = (stuid_raw == null) ? "0" : stuid_raw;
-        int stuid = Integer.parseInt(stuid_raw);
-        ScoreDBContext viewGrade = new ScoreDBContext();
-        ArrayList<Score> allCourses = viewGrade.getSubjectbyStudent(stuid);
-        request.setAttribute("allCourses", allCourses);
+        if (stuid_raw != null) {
+            int stuid = Integer.parseInt(stuid_raw);
+            ScoreDBContext viewGrade = new ScoreDBContext();
+            ArrayList<Score> allCourses = viewGrade.getSubjectbyStudent(stuid);
+            request.setAttribute("allCourses", allCourses);
+        }       
         request.getRequestDispatcher("../view/student/gradeManage.jsp").forward(request, response);
     }
 

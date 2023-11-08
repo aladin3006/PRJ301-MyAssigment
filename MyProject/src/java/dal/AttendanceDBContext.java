@@ -29,16 +29,22 @@ public class AttendanceDBContext extends DBContext<Attendance> {
     public ArrayList<Attendance> getAttendances(int scheid) {
         ArrayList<Attendance> atts = new ArrayList<>();
         try {
-            String sql = "SELECT s.stuid,s.stuname,stu_code,stud_fullname,ISNULL(a.status,0) as [status], \n"
-                    + "  ISNULL(a.description,'') as [description],\n"
-                    + "  ISNULL(a.att_datetime, GETDATE()) as [att_datetime],\n"
-                    + "  a.scheid\n"
-                    + "  FROM [Schedule] sche INNER JOIN [Group] g ON sche.gid = g.gid\n"
-                    + "			      INNER JOIN [Group_Student] gs ON g.gid = gs.gid\n"
-                    + "			      INNER JOIN [Student] s ON s.stuid = gs.stuid\n"
-                    + "			      LEFT JOIN Attendance a ON s.stuid = a.stuid \n"
-                    + "			      AND sche.scheid = a.scheid\n"
-                    + "	WHERE sche.scheid = ?";
+            String sql = "SELECT \n"
+                    + "    s.stuid, \n"
+                    + "    s.stuname, \n"
+                    + "    s.stu_code, \n"
+                    + "    s.stud_fullname, \n"
+                    + "    s.image, \n"
+                    + "    ISNULL(a.status, 0) AS [status], \n"
+                    + "    ISNULL(a.description, '') AS [description], \n"
+                    + "    ISNULL(a.att_datetime, GETDATE()) AS [att_datetime], \n"
+                    + "    a.scheid\n"
+                    + "FROM [Schedule] sche\n"
+                    + "INNER JOIN [Group] g ON sche.gid = g.gid\n"
+                    + "INNER JOIN [Group_Student] gs ON g.gid = gs.gid\n"
+                    + "INNER JOIN [Student] s ON s.stuid = gs.stuid\n"
+                    + "LEFT JOIN Attendance a ON s.stuid = a.stuid AND sche.scheid = a.scheid\n"
+                    + "WHERE sche.scheid = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, scheid);
             ResultSet rs = stm.executeQuery();
@@ -50,6 +56,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                 student.setName(rs.getString("stuname"));
                 student.setCode(rs.getString("stu_code"));
                 student.setFullName(rs.getString("stud_fullname"));
+                student.setImage(rs.getString("image"));
                 schedule.setId(scheid);
                 att.setStudent(student);
                 att.setSchedule(schedule);
@@ -80,7 +87,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                     + "LEFT JOIN [TimeSlot] t ON sche.tid = t.tid \n"
                     + "LEFT JOIN [Room] r ON r.roomid = sche.rid\n"
                     + "LEFT JOIN [Attendance] a on a.stuid = stu.stuid AND a.scheid = sche.scheid\n"
-                    + "WHERE stu.stuid = ? AND sche.[date] >= ? AND sche.[date] <= ?";   
+                    + "WHERE stu.stuid = ? AND sche.[date] >= ? AND sche.[date] <= ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, stuid);
             stm.setDate(2, from);

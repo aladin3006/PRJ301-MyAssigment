@@ -135,7 +135,7 @@
             <div>
                 <a href="" class="label">${sessionScope.account.name}</a>&nbsp;|
                 <a href="../logout" class="label">Logout</a>&nbsp;|       
-                <span class="label">CAMPUS: ${requestScope.timetables[1].campus.name}</span>
+                <span class="label label-hover">CAMPUS: FPTU-Hòa Lạc</span>
             </div>
 
         </div>

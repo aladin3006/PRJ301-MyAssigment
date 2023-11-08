@@ -10,12 +10,30 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class Campus extends BaseEntity{
+public class Campus extends BaseEntity {
 
     private int id;
     private String name;
+    private Student student;
+    private Instructor instructor;
     private ArrayList<Schedule> schedules = new ArrayList<>();
     private ArrayList<Attendance> timetables = new ArrayList<>();
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public Instructor getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(Instructor instructor) {
+        this.instructor = instructor;
+    }
 
     public int getId() {
         return id;

@@ -36,18 +36,6 @@
                 position: relative;
             }
 
-            .welcome {
-                display: flex;
-                color: white;
-                font-size: 26px;
-                background-color: orange;
-                margin-top: 50px;
-                display: inline-block;
-                border: 2px solid orange;
-                border-radius: 5px;
-                padding: 10px;
-            }
-
             button {
                 position: absolute;
                 bottom: 5px;
@@ -64,7 +52,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                padding: 10px; /* Add padding as needed */
+                padding: 10px;
             }
 
             .header__list {
@@ -101,6 +89,22 @@
                 padding-right: 15px;
                 padding-left: 15px;
             }
+            .student-image{
+                width: 100px;
+                height: 100px;
+                background-position: center;
+                background-repeat: no-repeat;
+                margin: 0 auto;
+
+            }
+            .student-image img{
+                width: 100%;
+                height: 100%;
+                background-position: center;
+                background-size: contain;
+                background-repeat: no-repeat;
+
+            }
         </style>
     </head>
     <body>
@@ -125,8 +129,6 @@
         </div>
 
         <div class="header__navbar">
-
-
             <ul class="header__list">
                 <li class="header__item">
                     <a class="header__link panel" href="schedule">Timetable</a>&nbsp;|
@@ -140,7 +142,6 @@
                 <a href="../logout" class="label">Logout</a>&nbsp;|       
                 <span class="label">CAMPUS: ${requestScope.schedules[1].campus.name}</span>
             </div>
-
         </div>
 
         <div class="">
@@ -152,7 +153,7 @@
         <form action="attended" method="POST">
             <input type="hidden" value="${requestScope.sche.id}" name="scheid"/>
             <table border="1px"> 
-                <tr>
+                <tr class="th">
                     <td>INDEX</td>
                     <td>Group</td>
                     <td>CODE</td>
@@ -174,7 +175,11 @@
                         </td>
                         <td>${a.student.fullName}
                         </td>
-                        <td></td>
+                        <td>
+                            <div class="student-image">
+                                <img src="${a.student.image}" alt="Image" />
+                            </div>
+                        </td>
                         <td>
                             <c:if test="${a.status}">Attended</c:if>
                             <c:if test="${!a.status}">Absent</c:if>

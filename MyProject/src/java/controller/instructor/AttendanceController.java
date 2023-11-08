@@ -78,6 +78,8 @@ public class AttendanceController extends HttpServlet {
         sche.setAtts(atts);
         ScheduleDBContext scheDB = new ScheduleDBContext();
         scheDB.addAttendances(sche);
+        String id = request.getParameter("scheid");
+        response.sendRedirect("attended?id=" + id);
     }
 
     /**

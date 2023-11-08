@@ -42,19 +42,6 @@
             td {
                 position: relative;
             }
-
-            .welcome {
-                display: flex;
-                color: white;
-                font-size: 26px;
-                background-color: orange;
-                margin-top: 50px;
-                display: inline-block;
-                border: 2px solid orange;
-                border-radius: 5px;
-                padding: 10px;
-            }
-
             button {
                 position: absolute;
                 bottom: 5px;
@@ -133,8 +120,6 @@
         </div>
 
         <div class="header__navbar">
-
-
             <ul class="header__list">
                 <li class="header__item">
                     <a class="header__link panel" href="schedule">Timetable</a>&nbsp;|
@@ -145,10 +130,9 @@
             </ul>
             <div>
                 <a href="" class="label">${sessionScope.account.name}</a>&nbsp;|
-                <a href="../logout" class="label">Logout</a>&nbsp;|       
-                <span class="label">CAMPUS: ${requestScope.schedules[1].campus.name}</span>
+                <a href="../logout" class="label">Logout</a>&nbsp;|  
+                <span class="label label-hover">CAMPUS: FPTU-Hòa Lạc</span>
             </div>
-
         </div>
 
         <table border="">

@@ -19,7 +19,7 @@ public class Account extends BaseEntity {
     private String name;
     private Instructor instructor;
     private Student student;
-    private ArrayList<Role> roles = new ArrayList<>();
+    private ArrayList<Role> roles = new ArrayList<>(); 
 
     public ArrayList<Role> getRoles() {
         return roles;

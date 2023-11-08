@@ -113,7 +113,7 @@ public class GroupDBContext extends DBContext<Group> {
     public ArrayList<Group> getStudentbyGroup(int gid) {
         ArrayList<Group> students = new ArrayList<>();
         try {
-            String sql = "SELECT s.stuid,s.stuname,s.stu_code,s.stud_fullname, g.gid,g.gname \n"
+            String sql = "SELECT s.stuid,s.stuname,s.stu_code,s.stud_fullname,s.image, g.gid,g.gname \n"
                     + "FROM [Student] s INNER JOIN [Group_Student] gs ON s.stuid = gs.stuid\n"
                     + "                  INNER JOIN [Group] g ON g.gid = gs.gid\n"
                     + "		WHERE g.gid=? ";
@@ -129,6 +129,7 @@ public class GroupDBContext extends DBContext<Group> {
                 student.setName(rs.getString("stuname"));
                 student.setCode(rs.getString("stu_code"));
                 student.setFullName(rs.getString("stud_fullname"));
+                student.setImage(rs.getString("image"));
                 group.setStudent(student);
                 students.add(group);
             }

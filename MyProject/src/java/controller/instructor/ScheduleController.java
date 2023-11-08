@@ -8,8 +8,10 @@ package controller.instructor;
 import dal.ScheduleDBContext;
 import dal.TimeSlotDBContext;
 import dal.AccountDBContext;
+import dal.CampusDBContext;
 import entity.Schedule;
 import entity.Account;
+import entity.Campus;
 import entity.TimeSlot;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -72,6 +74,9 @@ public class ScheduleController extends HttpServlet {
                 }
             }
 
+            CampusDBContext campDB = new CampusDBContext();
+            ArrayList<Campus> campusIns = campDB.listbyIns(instructorid);
+
             TimeSlotDBContext timeDB = new TimeSlotDBContext();
             ArrayList<TimeSlot> slots = timeDB.list();
 
@@ -80,6 +85,7 @@ public class ScheduleController extends HttpServlet {
 
             request.setAttribute("slots", slots);
             request.setAttribute("dates", dates);
+            request.setAttribute("campusIns", campusIns);
             request.setAttribute("from", dates.get(0));
             request.setAttribute("to", dates.get(dates.size() - 1));
             request.setAttribute("schedules", schedules);

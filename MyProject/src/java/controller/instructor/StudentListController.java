@@ -4,10 +4,14 @@
  */
 package controller.instructor;
 
+import dal.AccountDBContext;
+import dal.CampusDBContext;
 import dal.GroupDBContext;
 import dal.TermDBContext;
 import dal.DepartmentDBContext;
 import dal.SubjectDBContext;
+import entity.Account;
+import entity.Campus;
 import entity.Department;
 import entity.Group;
 import entity.Subject;
@@ -16,6 +20,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -53,22 +58,42 @@ public class StudentListController extends HttpServlet {
         int subid = Integer.parseInt(subid_raw);
         GroupDBContext group1 = new GroupDBContext();
         ArrayList<Group> groups1 = group1.getGroupbySubject(subid);
-        
+
         String gid_raw = request.getParameter("gid");
         gid_raw = (gid_raw == null) ? "0" : gid_raw;
         int gid = Integer.parseInt(gid_raw);
         GroupDBContext student = new GroupDBContext();
         ArrayList<Group> students = student.getStudentbyGroup(gid);
-        
 
         TermDBContext termDB = new TermDBContext();
         ArrayList<Term> terms = termDB.list();
 
         DepartmentDBContext deptDB = new DepartmentDBContext();
         ArrayList<Department> depts = deptDB.list();
-        
+
         SubjectDBContext subDB = new SubjectDBContext();
         ArrayList<Subject> subs = subDB.list();
+
+        HttpSession session = request.getSession();
+        Account loggedUser = (Account) session.getAttribute("account");
+
+        if (loggedUser != null) {
+            String aname = loggedUser.getName();
+            AccountDBContext dbContext = new AccountDBContext();
+            ArrayList<Account> accountList = dbContext.getIid(aname);
+
+            int instructorid = -1; // Default value if not found
+            for (Account account : accountList) {
+                if (account.getInstructor() != null) {
+                    instructorid = account.getInstructor().getId();
+                    break;
+                }
+            }
+
+            CampusDBContext campDB = new CampusDBContext();
+            ArrayList<Campus> campusIns = campDB.listbyIns(instructorid);
+            request.setAttribute("campusIns", campusIns);
+        }
 
         request.setAttribute("subjects", subjects);
         request.setAttribute("groups1", groups1);
