@@ -31,7 +31,7 @@ public class ScoreDBContext extends DBContext<Score> {
                     + "    INNER JOIN [Subject] su ON g.subid = su.subid\n"
                     + "    GROUP BY su.subid)\n"
                     + "    SELECT s.stuid,s.stuname,s.stu_code,s.stud_fullname, g.gid,g.gname,g.termid, "
-                    + "          su.subname,su.subid,su.description, sdt.category,sdt.value,sdt.status, t.termname \n"
+                    + "          su.subname,su.subid,su.description, sdt.category,sdt.value,sdt.status, t.termname,t.startdate,t.enddate \n"
                     + "   FROM [Student] s INNER JOIN [Group_Student] gs ON s.stuid = gs.stuid\n"
                     + "                 INNER JOIN [Group] g ON g.gid = gs.gid\n"
                     + "                 INNER JOIN [Term] t ON g.termid = t.termid\n"
@@ -58,6 +58,8 @@ public class ScoreDBContext extends DBContext<Score> {
                 Term t = new Term();
                 t.setId(rs.getInt("termid"));
                 t.setName(rs.getString("termname"));
+                t.setStartdate(rs.getDate("startdate"));
+                t.setEnddate(rs.getDate("enddate"));
                 subject.setTerm(t);
                 Student student = new Student();
                 student.setId(rs.getInt("stuid"));
@@ -111,7 +113,7 @@ public class ScoreDBContext extends DBContext<Score> {
     public ArrayList<Score> getScorebySubject(int subid) {
         ArrayList<Score> scores = new ArrayList<>();
         try {
-            String sql = "SELECT sdt.subid,sdt.category,sdt.type,sdt.weight,sdt.value , su.name,su.description \n"
+            String sql = "SELECT sdt.subid,sdt.category,sdt.type,sdt.weight,sdt.value,sdt.comment,sdt.status, su.subname,su.description \n"
                     + "FROM [Subjects_detail] sdt INNER JOIN [Subject] su ON sdt.subid = su.subid\n"
                     + "		WHERE sdt.subid=? ";
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -119,17 +121,19 @@ public class ScoreDBContext extends DBContext<Score> {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Score score = new Score();
+                score.setCategory(rs.getString("category"));
+                score.setType(rs.getString("type"));
+                score.setWeight(rs.getString("weight"));
+                score.setValue(rs.getDouble("value"));
+                score.setComment(rs.getString("comment"));
+                score.setStatus(rs.getBoolean("status"));
                 Subject subject = new Subject();
                 subject.setId(rs.getInt("subid"));
                 subject.setName(rs.getString("subname"));
                 subject.setDescription(rs.getString("description"));
-                Group group = new Group();
-                group.setId(rs.getInt("gid"));
-                group.setName(rs.getString("gname"));
-                Student student = new Student();
-                student.setId(rs.getInt("stuid"));
-                subject.setGroup(group);
-                subject.setStudent(student);
+//                Student student = new Student();
+//                student.setId(rs.getInt("stuid"));
+//                subject.setStudent(student);
                 score.setSubject(subject);
                 scores.add(score);
             }

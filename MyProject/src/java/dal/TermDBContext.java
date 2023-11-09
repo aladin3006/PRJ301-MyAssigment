@@ -24,7 +24,7 @@ public class TermDBContext extends DBContext<Term> {
         ArrayList<Term> terms = new ArrayList<>();
         try {
             String sql = "SELECT [termid]\n"
-                    + "      ,[termname]\n"
+                    + "      ,[termname],[startdate],[enddate]\n"
                     + "  FROM [Term]";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
@@ -32,6 +32,8 @@ public class TermDBContext extends DBContext<Term> {
                 Term t = new Term();
                 t.setId(rs.getInt("termid"));
                 t.setName(rs.getString("termname"));
+                t.setStartdate(rs.getDate("startdate"));
+                t.setEnddate(rs.getDate("enddate"));
                 terms.add(t);
             }
 

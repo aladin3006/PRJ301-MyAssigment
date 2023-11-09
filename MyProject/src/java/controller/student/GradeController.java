@@ -66,12 +66,6 @@ public class GradeController extends BasedAuthorizationController {
             ScoreDBContext courseDB = new ScoreDBContext();
             ArrayList<Score> courses = courseDB.getSubjectbyTerm(termid);
 
-            String subid_raw = request.getParameter("subid");
-            subid_raw = (subid_raw == null) ? "0" : termid_raw;
-            int subid = Integer.parseInt(subid_raw);
-            ScoreDBContext scoreDB = new ScoreDBContext();
-            ArrayList<Score> scores = scoreDB.getScorebySubject(subid);
-
             TermDBContext termDB = new TermDBContext();
             ArrayList<Term> terms = termDB.list();
 
@@ -80,7 +74,6 @@ public class GradeController extends BasedAuthorizationController {
 
             request.setAttribute("allCourses", allCourses);
             request.setAttribute("courses", courses);
-            request.setAttribute("scores", scores);
 
             request.setAttribute("terms", terms);
             request.setAttribute("subs", subs);

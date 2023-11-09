@@ -33,6 +33,7 @@
             }
 
             td {
+                text-align: center;
                 position: relative;
             }
 
@@ -187,7 +188,7 @@
                             ${a.description}
                         </td>
                         <td>
-                            ${requestScope.sche.instructor.name} 
+                            ${sessionScope.account.name} 
                         </td>
                         <td>${a.datetime}</td>
                     </tr>   

@@ -4,6 +4,8 @@
  */
 package entity;
 
+import java.sql.Date;
+
 /**
  *
  * @author Admin
@@ -12,6 +14,24 @@ public class Term extends BaseEntity {
 
     private int id;
     private String name;
+    private Date startdate;
+    private Date enddate;
+
+    public Date getStartdate() {
+        return startdate;
+    }
+
+    public void setStartdate(Date startdate) {
+        this.startdate = startdate;
+    }
+
+    public Date getEnddate() {
+        return enddate;
+    }
+
+    public void setEnddate(Date enddate) {
+        this.enddate = enddate;
+    }
 
     public int getId() {
         return id;

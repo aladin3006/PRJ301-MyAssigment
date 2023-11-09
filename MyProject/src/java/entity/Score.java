@@ -15,6 +15,7 @@ public class Score extends BaseEntity {
     private String type;
     private String weight;
     private double value;
+    private String comment;
     private boolean status;
     private Subject subject;
 
@@ -24,6 +25,14 @@ public class Score extends BaseEntity {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Subject getSubject() {

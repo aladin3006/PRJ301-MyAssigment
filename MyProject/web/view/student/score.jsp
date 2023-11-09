@@ -1,6 +1,6 @@
 <%-- 
-    Document   : gradeManage
-    Created on : Nov 3, 2023, 5:08:18 AM
+    Document   : score
+    Created on : Nov 9, 2023, 7:11:48 AM
     Author     : Admin
 --%>
 
@@ -140,44 +140,66 @@
             </div>
 
         </div>
-        <form action="course" method="post">
-            <table> 
-                <tr class="th">
-                    <td>INDEX</td>
-                    <td>SUBJECT CODE</td>
-                    <td>SUBJECT NAME</td>
-                    <td>SEMESTER</td>
-                    <td>STARTDATE</td>
-                    <td>ENDDATE</td>
-                    <td>AVERAGE MARK</td>
-                    <td>STATUS</td>
-                </tr>
-                <c:forEach items="${requestScope.allCourses}" var="all" varStatus="index">
-                    <tr>
-                        <td>
-                            ${index.index + 1}
-                        </td>
-                        <td>
-                            <a href="score?subid=${all.subject.id}">${all.subject.name}</a>
-                        </td>
-                        <td>
-                            ${all.subject.description}
-                        </td>
-                        <td>
-                            ${all.subject.term.name}
-                        </td>
-                        <td>${all.subject.term.startdate}</td>
-                        <td>${all.subject.term.enddate}</td>
-                        <td> 
-                            ${all.value}
-                        </td>
-                        <td> 
-                            <c:if test="${all.status}"><span style="color: blue;">(Passed)</span></c:if>
-                            <c:if test="${!all.status}"><span style="color: blue;">(Not Passed)</span></c:if>
+        <table> 
+            <tr class="th">
+                <td>GRADE CATEGORY</td>
+                <td>GRADE ITEM</td>
+                <td>WEIGHT</td>
+                <td>VALUE</td>
+                <td>COMMENT</td>
+            </tr>
+            <c:forEach items="${requestScope.scores}" var="s">
+                <c:if test="${s.category ne 'COURSE TOTAL'}">
+                    <c:if test="${s.type ne 'Total'}">
+                        <tr>
+                            <td>
+                                ${s.category}
                             </td>
-                        </tr>   
-                </c:forEach>
-            </table>
-        </form>
-    </body>
+                            <td>
+                                ${s.type}
+                            </td>
+                            <td>
+                                ${s.weight}
+                            </td>
+                            <td>
+                                ${s.value}
+                            <td> 
+                                ${s.comment}
+                            </td>
+                        </tr>    
+                    </c:if>
+                    <c:if test="${s.type eq 'Total'}">
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                ${s.type}
+                            </td>
+                            <td>
+                                ${s.weight}
+                            </td>
+                            <td>
+                                ${s.value}
+                            <td> 
+                                ${s.comment}
+                            </td>
+                        </tr>    
+                    </c:if>
+                </c:if>
+                <c:if test="${s.category eq 'COURSE TOTAL'}">
+                    <tfoot>
+                        <tr>
+                            <td rowspan="2">Course total</td>
+                            <td>Average</td><td colspan="3">${s.value}</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td><td colspan="3">
+                                <c:if test="${!s.status}"><font color="Red">NOT PASS</font></td></c:if>
+                    <c:if test="${s.status}"><font color="Green">PASS</font></td></c:if>
+                </tr>
+            </tfoot>
+    </c:if>
+</c:forEach>
+</table>
+</body>
 </html>
